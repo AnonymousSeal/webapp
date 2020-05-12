@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block head %}
+
+<title>Login</title>
+
+<style>
+  input[type=text], select, textarea {
+  font-size: 20px;
+}
+  input[type=password], select, textarea {
+  font-size: 20px;
+}
+  input[type=submit], select, textarea {
+  font-size: 20px;
+}
+  h1{
+  font-size: 30px;
+}
+  .container {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+</style>
+
+{% endblock %}
+{% block body %}
+
+<div class=container>
+  <h1>Ferienarbeitsgemeinschaft</h1>
+  <br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br>
+</div>
+
+<div class="container">
+  <form action='/login' method='POST'>
+    <input type="text" name="username" placeholder="username"><br>
+    <br>
+    <input type="password" name="password" placeholder="password"><br>
+    <br><br><br>
+    <input type="submit" id="login" value="Login"><br>
+  </form>
+</div>
+
+
+{% endblock %}

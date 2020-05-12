@@ -1,0 +1,36 @@
+body {
+  background: black;
+  color: chartreuse;
+}
+
+input[type=text], select, textarea {
+  width: 15em;
+  padding: 0.6em;
+  border: 0.05em solid #ccc;
+  border-radius: 0.2em;
+  display: inline-block;
+  resize: vertical;
+}
+
+input[type=password], select, textarea {
+  width: 15em;
+  padding: 0.6em;
+  border: 0.05em solid #ccc;
+  border-radius: 0.2em;
+  display: inline-block;
+  resize: vertical;
+}
+
+input[type=submit], select, textarea {
+  width: 15em;
+  padding: 0.6em;
+  background-color: red;
+  border: 0.05em solid #ccc;
+  border-color: #b30000;
+  display: inline-block;
+  resize: vertical;
+}
+
+.container {
+  text-align: center;
+}
