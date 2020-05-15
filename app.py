@@ -12,7 +12,7 @@ def index():
 def login():
     if request.method == 'POST':
         credentials = [request.form['username'],request.form['password']]
-        conn, c = db.connect2db(db='database/database.db')
+        conn, c = db.connect2db(db='database/test_database.db')
         log.comment('connected to database')
         log.comment(credentials[0] + ', ' + credentials[1])
         if db.is_password(c, credentials[0], credentials[1]):
