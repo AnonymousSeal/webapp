@@ -9,10 +9,11 @@ def index():
     return render_template('index.html')
 
 @app.route('/login', methods=['POST','GET'])
+#login still needs improvement (flask user handling) + User class
 def login():
     if request.method == 'POST':
-        credentials = [request.form['username'],request.form['password']]
-        conn, c = db.connect2db(db='database/test_database.db')
+        credentials = [request.form['email'],request.form['password']]
+        conn, c = db.connect2db(database='database/test_database.db')
         log.comment('connected to database')
         log.comment(credentials[0] + ', ' + credentials[1])
         if db.is_password(c, credentials[0], credentials[1]):

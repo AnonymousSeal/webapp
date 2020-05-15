@@ -14,7 +14,7 @@ def add_user(c, email, name, pw):
 
 def get_user(c, email):
     try:
-        c.execute(f'''SELECT * FROM users WHERE users.name = '{email}';''')
+        c.execute(f'''SELECT * FROM users WHERE users.email = '{email}';''')
         user = c.fetchone()
         return user
     except:
