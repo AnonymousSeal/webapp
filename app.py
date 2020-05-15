@@ -33,7 +33,8 @@ def task():
     task_id = request.args.get('id')
     _, c = db.connect2db(database='database/test_database.db')
     task = db.get_task_by_id(c, task_id)
-    return render_template('task.html', task=task)
+    subject = db.get_subject_by_id(c, task[4])
+    return render_template('task.html', task=task, subject=subject)
 
 if __name__ == '__main__':
     app.run(debug=True)

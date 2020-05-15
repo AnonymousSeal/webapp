@@ -28,9 +28,9 @@ def is_password(c, email, pw):
             return True
     return False
 
-def add_schedule_task(c, task_name, user_id):
-    c.execute('''INSERT INTO schedule (task_name, user_id) VALUES (?, ?);''',
-    (task_name, user_id))
+def add_schedule_task(c, task_name, deadline, user_id, subject_id):
+    c.execute('''INSERT INTO schedule (task_name, deadline, user_id, subject_id) VALUES (?, ?, ?, ?);''',
+    (task_name, deadline, user_id, subject_id))
 
 def get_schedule(c):
     c.execute('''SELECT * FROM schedule''')
@@ -38,5 +38,11 @@ def get_schedule(c):
 
 def get_task_by_id(c, id):
     c.execute(f'''SELECT * FROM schedule WHERE schedule_id = '{id}';''')
-    user = c.fetchone()
-    return user
+    return c.fetchone()
+
+def add_subject(c, name):
+    c.execute(f'''INSERT INTO subjects (name) VALUES ('{name}');''')
+
+def get_subject_by_id(c, id):
+    c.execute(f'''SELECT * FROM subjects WHERE subject_id = '{id}';''')
+    return c.fetchone()[1]

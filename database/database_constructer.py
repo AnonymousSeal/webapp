@@ -16,12 +16,13 @@ c.execute('''CREATE TABLE IF NOT EXISTS schedule (
     deadline DATETIME,
     user_id INTERGER,
     subject_id INTEGER,
-    FOREIGN KEY (user_id) REFERENCES user(user_id)
+    FOREIGN KEY (user_id) REFERENCES user(user_id),
     FOREIGN KEY (subject_id) REFERENCES subjects(subject_id)
     )''')
-#c.execute('''CREATE TABLE IF NOT EXISTS subjects (
-#    subject_id AUTOINCREMENT PRIMARY KEY,
-#    name VARCHAR(10)''')
+c.execute('''CREATE TABLE IF NOT EXISTS subjects (
+    subject_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name VARCHAR(20) NOT NULL
+    )''')
 #c.execute('''CREATE TABLE IF NOT EXISTS material (
 #    material_id INTEGER PRIMARY KEY AUTOINCREMENT,
 #    material_path
