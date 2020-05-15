@@ -8,8 +8,6 @@
     font-size: 20;
   }
   .container {
-  position: absolute;
-  left: 50%;
   top: 5%;
   transform: translate(-50%, 0%);
   }
@@ -24,7 +22,7 @@
     {% for task in schedule %}
       <tr>
         <td>
-          <a href="{{ url_for('task', id=task[0])}}">
+          <a href="{{ url_for('task', id=task[0])}}" style='font-size: 30px'>
             {{ task[2] }}
           </a>
         </td>
