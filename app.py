@@ -27,7 +27,9 @@ def login():
 
 @app.route('/my')
 def my():
-    return render_template('my.html')
+    conn, c = db.connect2db(database='database/test_database.db')
+    schedule = db.get_schedule(c)
+    return render_template('my.html', schedule=schedule)
 
 if __name__ == '__main__':
     app.run(debug=True)

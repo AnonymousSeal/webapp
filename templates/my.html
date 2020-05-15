@@ -4,21 +4,35 @@
 <title>Schedule</title>
 
 <style>
+  th{
+    font-size: 20;
+  }
+  tb{
+    font-size: 15;
+  }
+  .container {
+  position: absolute;
+  left: 50%;
+  top: 5%;
+  transform: translate(-50%, 0%);
+  }
 </style>
 
 {% endblock %}
 {% block body %}
 
-<div class='content'>
+<div class='container'>
   <table>
     <tr>
-      <th>Tasks</th>
+      <th>Taskname</th>
+      <th>Time Added</th>
     </tr>
-
-    <tr>
-      <td></td>
-    </tr>
-
+    {% for task in schedule %}
+      <tr>
+        <td>{{ task[2] }}</td>
+        <td>{{ task[1] }}</td>
+      </tr>
+    {% endfor %}
   </table>
 </div>
 

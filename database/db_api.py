@@ -1,8 +1,8 @@
 import sqlite3
 import hashlib
 
-def connect2db(db='database.db'):
-    conn = sqlite3.connect(db)
+def connect2db(database='database.db'):
+    conn = sqlite3.connect(database)
     c = conn.cursor()
     return conn, c
 
@@ -28,6 +28,10 @@ def is_password(c, email, pw):
             return True
     return False
 
-def add_schedule(c, task_name, user_id):
+def add_schedule_task(c, task_name, user_id):
     c.execute('''INSERT INTO schedule (task_name, user_id) VALUES (?, ?);''',
     (task_name, user_id))
+
+def get_schedule(c):
+    c.execute('''SELECT * FROM schedule''')
+    return c.fetchall()
