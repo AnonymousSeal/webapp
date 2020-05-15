@@ -1,6 +1,6 @@
 body {
-  background: black;
-  color: chartreuse;
+  background: #1E2127;
+  color: #87B966;
 }
 
 input[type=text], select, textarea {
@@ -8,6 +8,7 @@ input[type=text], select, textarea {
   padding: 0.6em;
   border: 0.05em solid #ccc;
   border-radius: 0.2em;
+  background-color: #e6e6fa;
   display: inline-block;
   resize: vertical;
 }
@@ -17,6 +18,7 @@ input[type=password], select, textarea {
   padding: 0.6em;
   border: 0.05em solid #ccc;
   border-radius: 0.2em;
+  background-color: #e6e6fa;
   display: inline-block;
   resize: vertical;
 }
@@ -24,9 +26,9 @@ input[type=password], select, textarea {
 input[type=submit], select, textarea {
   width: 15em;
   padding: 0.6em;
-  background-color: red;
+  background-color: #48A8B5;
   border: 0.05em solid #ccc;
-  border-color: #b30000;
+  border-color: #518DDA;
   display: inline-block;
   resize: vertical;
 }
