@@ -18,15 +18,15 @@ def login():
         log.comment(credentials[0] + ', ' + credentials[1])
         if db.is_password(c, credentials[0], credentials[1]):
             log.comment('correct pw')
-            return redirect(url_for('my'))
+            return redirect(url_for('schedule'))
         return redirect(url_for('login'))
     return render_template('login.html')
 
-@app.route('/my')
-def my():
+@app.route('/schedule')
+def schedule():
     _, c = db.connect2db(database='database/test_database.db')
     schedule = db.get_schedule(c)
-    return render_template('my.html', schedule=schedule)
+    return render_template('schedule.html', schedule=schedule)
 
 @app.route('/task')
 def task():
