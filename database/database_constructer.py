@@ -6,13 +6,14 @@ c = conn.cursor()
 
 c.execute('''CREATE TABLE IF NOT EXISTS users (
     user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    email VARCHAR(255) PRIMARY KEY,
     name VARCHAR(24) NOT NULL,
     password_hash VARCHAR(2048) NOT NULL
     )''')
 c.execute('''CREATE TABLE IF NOT EXISTS schedule (
     schedule_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    task_name VARCHAR(24) NOT NULL,
     time_added DATETIME DEFAULT CURRENT_TIMESTAMP,
+    task_name VARCHAR(24) NOT NULL,
     user_id INTERGER,
     FOREIGN KEY (user_id) REFERENCES user(user_id)
     )''')
