@@ -4,11 +4,8 @@
 <title>Schedule</title>
 
 <style>
-  th{
+  td{
     font-size: 20;
-  }
-  tb{
-    font-size: 15;
   }
   .container {
   position: absolute;
@@ -22,14 +19,11 @@
 {% block body %}
 
 <div class='container'>
+  <h1>Tasks</h1>
   <table>
-    <tr>
-      <th>Taskname</th>
-      <th>Time Added</th>
-    </tr>
     {% for task in schedule %}
       <tr>
-        <td>{{ task[2] }}</td>
+        <td><a href="{{ url_for('task', id=task[0])}}">{{ task[2] }}</a></td>
         <td>{{ task[1] }}</td>
       </tr>
     {% endfor %}

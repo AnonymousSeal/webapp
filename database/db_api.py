@@ -35,3 +35,8 @@ def add_schedule_task(c, task_name, user_id):
 def get_schedule(c):
     c.execute('''SELECT * FROM schedule''')
     return c.fetchall()
+
+def get_task_by_id(c, id):
+    c.execute(f'''SELECT * FROM schedule WHERE schedule_id = '{id}';''')
+    user = c.fetchone()
+    return user
