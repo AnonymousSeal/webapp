@@ -35,13 +35,22 @@ input[type=submit], select, textarea {
 
 .container {
   text-align: center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 a:link, a:visited {
-  color: (internal value);
-  text-decoration: underline;
-  cursor: auto;
+  color: #97C976;
+  text-decoration: none;
 }
 a:link:active, a:visited:active {
-  color: (internal value);
+  color: #97C976;
+}
+
+tr:hover {background-color: #25282E;}
+
+th, td {
+  border-bottom: 1px solid #ddd;
 }

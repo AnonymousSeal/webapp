@@ -23,8 +23,11 @@
   <table>
     {% for task in schedule %}
       <tr>
-        <td><a href="{{ url_for('task', id=task[0])}}">{{ task[2] }}</a></td>
-        <td>{{ task[1] }}</td>
+        <td>
+          <a href="{{ url_for('task', id=task[0])}}">
+            {{ task[2] }}
+          </a>
+        </td>
       </tr>
     {% endfor %}
   </table>
