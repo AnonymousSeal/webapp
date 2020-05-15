@@ -6,22 +6,22 @@ def connect2db(db='database.db'):
     c = conn.cursor()
     return conn, c
 
-def add_user(c, name, pw):
+def add_user(c, email, name, pw):
     # not a good hashing function for pws
     password_hash = hashlib.sha224(str.encode(pw)).hexdigest()
-    c.execute('''INSERT INTO users (name, password_hash) VALUES (?, ?);''',
-    (name, password_hash))
+    c.execute('''INSERT INTO users (email, name, password_hash) VALUES (?, ?, ?);''',
+    (email, name, password_hash))
 
-def get_user(c, name):
+def get_user(c, email):
     try:
-        c.execute(f'''SELECT * FROM users WHERE users.name = '{name}';''')
+        c.execute(f'''SELECT * FROM users WHERE users.name = '{email}';''')
         user = c.fetchone()
         return user
     except:
         return None
 
-def is_password(c, name, pw):
-    user = get_user(c, name)
+def is_password(c, email, pw):
+    user = get_user(c, email)
     if user is not None:
         this_pw_hash = hashlib.sha224(str.encode(pw)).hexdigest()
         if this_pw_hash == user[2]:
@@ -29,8 +29,5 @@ def is_password(c, name, pw):
     return False
 
 def add_schedule(c, task_name, user_id):
-    pass
-
-#conn, c = connect2db()
-#add_user(c, 'testtest', 'testtest')
-#conn.commit()
+    c.execute('''INSERT INTO schedule (task_name, user_id) VALUES (?, ?);''',
+    (task_name, user_id))
