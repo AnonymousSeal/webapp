@@ -1,10 +1,14 @@
 import sqlite3
 import hashlib
 
+#------ connection ------#
+
 def connect2db(database='database.db'):
     conn = sqlite3.connect(database)
     c = conn.cursor()
     return conn, c
+
+#------ user ------#
 
 def add_user(c, email, name, pw):
     # not a good hashing function for pws
@@ -28,6 +32,8 @@ def is_password(c, email, pw):
             return True
     return False
 
+#------ schedule ------#
+
 def add_schedule_task(c, task_name, deadline, user_id, subject_id):
     c.execute('''INSERT INTO schedule (task_name, deadline, user_id, subject_id) VALUES (?, ?, ?, ?);''',
     (task_name, deadline, user_id, subject_id))
@@ -39,6 +45,8 @@ def get_schedule(c):
 def get_task_by_id(c, id):
     c.execute(f'''SELECT * FROM schedule WHERE schedule_id = '{id}';''')
     return c.fetchone()
+
+#------ subject ------#
 
 def add_subject(c, name):
     c.execute(f'''INSERT INTO subjects (name) VALUES ('{name}');''')
