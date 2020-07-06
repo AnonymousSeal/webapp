@@ -7,3 +7,6 @@ __pycache__/
 log.txt
 *test*
 *archived*
+
+database/*
+*.sqlite3
