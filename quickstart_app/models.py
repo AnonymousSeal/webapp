@@ -1,5 +1,6 @@
 from flask_user import UserMixin
 from quickstart_app import db
+from datetime import datetime
 
 # Define the User data-model.
 # NB: Make sure to add flask_user UserMixin !!!
@@ -18,13 +19,15 @@ class User(db.Model, UserMixin):
     first_name = db.Column(db.String(100, collation='NOCASE'), nullable=False, server_default='')
     last_name = db.Column(db.String(100, collation='NOCASE'), nullable=False, server_default='')
 
-    def __init__(self):
-        self.id = id
-        self.active = active
-        self.username = username
-        self.password = password
-        self.first_name = first_name
-        self.last_name = last_name
+class Task(db.Model):
+    __tablename__ = 'schedule'
 
-    def __repr__(self):
-        print(f"User(username: {self.username}, first name: {self.first_name}, last name: {self.last_name})")
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    time_added = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+    name = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.String(250), nullable=False)
+    deadline = db.Column(db.DateTime, nullable=False)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    #subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'), nullable=False)

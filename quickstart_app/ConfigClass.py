@@ -5,7 +5,7 @@ class ConfigClass(object):
     SECRET_KEY = '#dffwr2rRF#DR^@FTFW@&y2763rygwytfe732t2eyf' #already changed
 
     # Flask-SQLAlchemy settings
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///quickstart_app.sqlite3'    # File-based SQL database
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///database/quickstart_app.sqlite3'    # File-based SQL database
     SQLALCHEMY_TRACK_MODIFICATIONS = False    # Avoids SQLAlchemy warning
 
     # Flask-User settings
