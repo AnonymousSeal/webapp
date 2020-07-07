@@ -1,7 +1,7 @@
 from flask_user import login_required, UserManager
 from quickstart_app import app, db
 from flask import render_template, request
-from quickstart_app.models import User, Task
+from quickstart_app.models import User, Task, Subject
 
 user_manager = UserManager(app, db, User)   # Setup Flask-User and specify the User data-model
 
@@ -20,4 +20,5 @@ def schedule():
 @login_required    # User must be authenticated
 def task():
     task = Task.query.get(request.args.get('id'))
-    return render_template('task.html', task=task)
+    subject = Subject.query.get(task.subject_id)
+    return render_template('task.html', task=task, subject=subject)
