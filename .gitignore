@@ -7,6 +7,7 @@ __pycache__/
 log.txt
 *test*
 *archived*
+material/
 
 database/*
 *.sqlite3

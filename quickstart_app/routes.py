@@ -1,7 +1,10 @@
-from flask_user import login_required, UserManager
-from quickstart_app import app, db
-from flask import render_template, request
 from quickstart_app.models import User, Task, Subject
+from quickstart_app.tools import allowed_file
+from quickstart_app import app, db
+from flask import render_template, request, redirect, url_for, send_from_directory
+from flask_user import login_required, UserManager
+from werkzeug.utils import secure_filename
+import os
 
 user_manager = UserManager(app, db, User)   # Setup Flask-User and specify the User data-model
 
@@ -16,9 +19,31 @@ def index():
 def schedule():
     return render_template('schedule.html', schedule=Task.query.all())
 
-@app.route('/task')
+@app.route('/task', methods=['GET', 'POST'])
 @login_required    # User must be authenticated
 def task():
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return 'upload successful'
     task = Task.query.get(request.args.get('id'))
     subject = Subject.query.get(task.subject_id)
     return render_template('task.html', task=task, subject=subject)
+
+'''@app.route('/uploads/<filename>')
+@login_required
+def uploaded_file(filename):
+    return filename
+    return send_from_directory(app.config['UPLOAD_FOLDER'],
+                               filename)'''
