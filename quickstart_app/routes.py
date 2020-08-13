@@ -1,7 +1,8 @@
-from quickstart_app.models import User, Task, Subject
+from quickstart_app.models import User, Task, Subject, Material
 from quickstart_app.tools import allowed_file
 from quickstart_app import app, db
 from flask import render_template, request, redirect, url_for, send_from_directory
+from flask_login import current_user
 from flask_user import login_required, UserManager
 from werkzeug.utils import secure_filename
 import os
@@ -22,6 +23,7 @@ def schedule():
 @app.route('/task', methods=['GET', 'POST'])
 @login_required    # User must be authenticated
 def task():
+
     if request.method == 'POST':
         # check if the post request has the file part
         if 'file' not in request.files:
@@ -36,10 +38,14 @@ def task():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return 'upload successful'
-    task = Task.query.get(request.args.get('id'))
-    subject = Subject.query.get(task.subject_id)
-    return render_template('task.html', task=task, subject=subject)
+            db.session.add(Material(filename=filename, user_id=current_user.id, schedule_id=request.args.get('id')))
+            db.session.commit()
+            material = Material.query.all()
+
+    task  = Task.query.get(request.args.get('id'))
+    subject = Subject.query.get(task.subject_id) # TODO: this can be deleted if you mention it in task, I think Corey Schaefer video 4 or 5
+    material = Material.query.all() 
+    return render_template('task.html', task=task, subject=subject, material_list=material)
 
 '''@app.route('/uploads/<filename>')
 @login_required

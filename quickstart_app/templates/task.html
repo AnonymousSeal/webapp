@@ -9,9 +9,8 @@
 {% block body %}
 
 <section id=title>
-  <h1>{{ task.name }}</h1>
-  {{ subject.name }}<br><br><br><br>
-  {{ task.description }}
+  <h1>{{ subject.name }} | {{ task.name }}</h1>
+  {{ task.description }}<br>
 </section>
 
 <section id=upload>
@@ -19,6 +18,19 @@
     <input type=file name=file>
     <input type=submit value=Upload>
   </form>
+</section>
+
+<section id=table>
+  <h2>Uploads</h2>
+  <table>
+    {% for material in material_list %}
+      <tr>
+        <td>
+          {{ material.filename }}
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
 </section>
 
 {% endblock %}

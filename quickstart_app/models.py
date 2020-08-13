@@ -6,6 +6,7 @@ from datetime import datetime
 # NB: Make sure to add flask_user UserMixin !!!
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
+
     id = db.Column(db.Integer, primary_key=True)
     active = db.Column('is_active', db.Boolean(), nullable=False, server_default='1')
 
@@ -37,3 +38,14 @@ class Subject(db.Model):
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     name = db.Column(db.String(30), nullable=False)
+
+class Material(db.Model):
+    __tablename__ = 'material'
+
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    time_added = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+    filename = db.Column(db.String(255), nullable=False)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    schedule_id = db.Column(db.Integer, db.ForeignKey('schedule.id'), nullable=False)
