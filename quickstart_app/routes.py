@@ -1,10 +1,11 @@
 from quickstart_app.models import User, Task, Subject, Material
-from quickstart_app.tools import allowed_file
+from quickstart_app.tools import allowed_file, log
 from quickstart_app import app, db
-from flask import render_template, request, redirect, url_for, send_from_directory
+from flask import render_template, request, redirect, url_for, send_from_directory, abort, flash
 from flask_login import current_user
 from flask_user import login_required, UserManager
 from werkzeug.utils import secure_filename
+from datetime import datetime
 import os
 
 user_manager = UserManager(app, db, User)   # Setup Flask-User and specify the User data-model
@@ -43,13 +44,15 @@ def task():
             material = Material.query.all()
 
     task  = Task.query.get(request.args.get('id'))
-    subject = Subject.query.get(task.subject_id) # TODO: this can be deleted if you mention it in task, I think Corey Schaefer video 4 or 5
-    material = Material.query.all() 
+    subject = Subject.query.get(task.subject_id)
+    material = Material.query.filter(Material.schedule_id == request.args.get('id'))
     return render_template('task.html', task=task, subject=subject, material_list=material)
 
-'''@app.route('/uploads/<filename>')
+@app.route('/uploads/<filename>')
 @login_required
 def uploaded_file(filename):
-    return filename
-    return send_from_directory(app.config['UPLOAD_FOLDER'],
-                               filename)'''
+    log([app.config['UPLOAD_FOLDER'], filename])
+    try:
+        return send_from_directory(app.config['UPLOAD_FOLDER'], filename=filename, as_attachment=False)
+    except FileNotFoundError:
+        abort(404)

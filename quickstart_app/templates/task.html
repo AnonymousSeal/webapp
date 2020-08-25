@@ -14,6 +14,7 @@
 </section>
 
 <section id=upload>
+  <h2>Uploads</h2>
   <form method=post enctype=multipart/form-data>
     <input type=file name=file>
     <input type=submit value=Upload>
@@ -21,12 +22,14 @@
 </section>
 
 <section id=table>
-  <h2>Uploads</h2>
   <table>
     {% for material in material_list %}
       <tr>
         <td>
-          {{ material.filename }}
+          <a href="{{ url_for('uploaded_file', filename=material.filename)}}">
+            {{ material.filename }} |
+            {{ material.time_added.strftime('%H:%M %d.%m.%Y') }}
+          </a>
         </td>
       </tr>
     {% endfor %}

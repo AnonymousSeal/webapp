@@ -14,6 +14,6 @@ class ConfigClass(object):
     USER_ENABLE_USERNAME = True    # Enable username authentication
     USER_REQUIRE_RETYPE_PASSWORD = True
 
-    UPLOAD_FOLDER = 'quickstart_app/material'
+    UPLOAD_FOLDER = '/Users/elias/Documents/GitRepos/webapp/quickstart_app/static/material'
     ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'doc', 'docx', 'pptx', 'xlsx'}
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024 #16 Mb
