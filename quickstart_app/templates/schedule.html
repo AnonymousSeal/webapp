@@ -8,13 +8,18 @@
 {% endblock %}
 {% block body %}
 
-<section id=table>
-  <h1>Tasks</h1>
+<section id=add_new_task>
+  <h1>Tasks |
+    <a href="{{ url_for('add_task') }}" class=button>+</a><p>
+  </h1>
+</section>
+
+<section id=table_of_tasks>
   <table>
     {% for task in schedule %}
       <tr>
         <td>
-          <a href="{{ url_for('task', id=task.id)}}">
+          <a href="{{ url_for('task', id=task.id) }}">
             {{ task.name }}
           </a>
         </td>

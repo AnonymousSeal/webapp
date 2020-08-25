@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+
+{% extends "base.html" %}
+{% block head %}
+
+<title>Add Task</title>
+
+{% endblock %}
+{% block body %}
+
+<section id=add_new_task>
+  <form action="/add_task" method="POST">
+    <input type="text" name="name" placeholder="name">
+    <input type="text" name="description" placeholder="description">
+    <input type="date" name="deadline" placeholder="deadline (eg. 23.10.2020)">
+    <select name="subject" id="subject">
+      {% for subject in subjects %}
+        <option name="subject" value="{{ subject.id }}">{{ subject.name }}</option>
+      {% endfor %}
+    </select>
+    <input type="submit" id="add" value="submit">
+  </form>
+</section>
+
+{% endblock %}

@@ -48,6 +48,15 @@ def task():
     material = Material.query.filter(Material.schedule_id == request.args.get('id'))
     return render_template('task.html', task=task, subject=subject, material_list=material)
 
+@app.route('/add_task', methods=['GET', 'POST'])
+@login_required    # User must be authenticated
+def add_task():
+    if request.method == 'POST':
+        db.session.add(Task(name=request.form['name'], description=request.form['description'], deadline=datetime.strptime(request.form['deadline'], '%d.%m.%Y'), user_id=current_user.id, subject_id=request.form['subject']))
+        db.session.commit()
+        return render_template('schedule.html', schedule=Task.query.all())
+    return render_template('add_task.html', subjects=Subject.query.all())
+
 @app.route('/uploads/<filename>')
 @login_required
 def uploaded_file(filename):
