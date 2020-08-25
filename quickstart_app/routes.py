@@ -24,7 +24,23 @@ def schedule():
 @app.route('/task', methods=['GET', 'POST'])
 @login_required    # User must be authenticated
 def task():
+    task  = Task.query.get(request.args.get('id'))
+    subject = Subject.query.get(task.subject_id)
+    material = Material.query.filter(Material.schedule_id == request.args.get('id'))
+    return render_template('task.html', task=task, subject=subject, material_list=material)
 
+@app.route('/add_task', methods=['GET', 'POST'])
+@login_required    # User must be authenticated
+def add_task():
+    if request.method == 'POST':
+        db.session.add(Task(name=request.form['name'], description=request.form['description'], deadline=datetime.strptime(request.form['deadline'], '%d.%m.%Y'), user_id=current_user.id, subject_id=request.form['subject']))
+        db.session.commit()
+        return render_template('schedule.html', schedule=Task.query.all())
+    return render_template('add_task.html', subjects=Subject.query.all())
+
+@app.route('/upload_file', methods=['GET', 'POST'])
+@login_required    # User must be authenticated
+def upload_file():
     if request.method == 'POST':
         # check if the post request has the file part
         if 'file' not in request.files:
@@ -39,23 +55,15 @@ def task():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            db.session.add(Material(filename=filename, user_id=current_user.id, schedule_id=request.args.get('id')))
+            db.session.add(Material(filename=filename, user_id=current_user.id, schedule_id=request.args.get('task_id')))
             db.session.commit()
             material = Material.query.all()
 
-    task  = Task.query.get(request.args.get('id'))
-    subject = Subject.query.get(task.subject_id)
-    material = Material.query.filter(Material.schedule_id == request.args.get('id'))
-    return render_template('task.html', task=task, subject=subject, material_list=material)
-
-@app.route('/add_task', methods=['GET', 'POST'])
-@login_required    # User must be authenticated
-def add_task():
-    if request.method == 'POST':
-        db.session.add(Task(name=request.form['name'], description=request.form['description'], deadline=datetime.strptime(request.form['deadline'], '%d.%m.%Y'), user_id=current_user.id, subject_id=request.form['subject']))
-        db.session.commit()
-        return render_template('schedule.html', schedule=Task.query.all())
-    return render_template('add_task.html', subjects=Subject.query.all())
+            task  = Task.query.get(request.args.get('task_id'))
+            subject = Subject.query.get(task.subject_id)
+            material = Material.query.filter(Material.schedule_id == request.args.get('task_id'))
+        return render_template('task.html', task=task, subject=subject, material_list=material)
+    return render_template('upload_file.html', subjects=Subject.query.all())
 
 @app.route('/uploads/<filename>')
 @login_required
