@@ -1,4 +1,4 @@
-from quickstart_app.models import User, Task, Subject, Material
+from quickstart_app.models import User, Task, Subject, Material, Comment
 from quickstart_app.tools import allowed_file, log
 from quickstart_app import app, db
 from flask import render_template, request, redirect, url_for, send_from_directory, abort, flash
@@ -24,10 +24,21 @@ def schedule():
 @app.route('/task', methods=['GET', 'POST'])
 @login_required    # User must be authenticated
 def task():
-    task  = Task.query.get(request.args.get('id'))
+    task_id = request.args.get('id')
+    task  = Task.query.get(task_id)
     subject = Subject.query.get(task.subject_id)
-    material = Material.query.filter(Material.schedule_id == request.args.get('id'))
-    return render_template('task.html', task=task, subject=subject, material_list=material)
+    material = Material.query.filter(Material.schedule_id == task_id)
+    comments = Comment.query.filter(Comment.schedule_id == task_id)
+    return render_template('task.html', task=task, subject=subject, material_list=material, comments=comments)
+
+@app.route('/add_comment', methods=['GET', 'POST'])
+@login_required    # User must be authenticated
+def add_comment():
+    if request.method == 'POST':
+        db.session.add(Comment(title=request.form['title'], comment=request.form['comment'], user_id=current_user.id, schedule_id=request.args.get('task_id')))
+        db.session.commit()
+        return render_template('task.html', id=request.args.get('task_id'))
+    return render_template('add_comment.html')
 
 @app.route('/add_task', methods=['GET', 'POST'])
 @login_required    # User must be authenticated
@@ -35,7 +46,11 @@ def add_task():
     if request.method == 'POST':
         db.session.add(Task(name=request.form['name'], description=request.form['description'], deadline=datetime.strptime(request.form['deadline'], '%d.%m.%Y'), user_id=current_user.id, subject_id=request.form['subject']))
         db.session.commit()
-        return render_template('schedule.html', schedule=Task.query.all())
+
+        task  = Task.query.get(request.args.get('task_id'))
+        subject = Subject.query.get(task.subject_id)
+        material = Material.query.filter(Material.schedule_id == request.args.get('task_id'))
+        return render_template('task.html', task=task, subject=subject, material_list=material, comments=comments)
     return render_template('add_task.html', subjects=Subject.query.all())
 
 @app.route('/upload_file', methods=['GET', 'POST'])
@@ -57,18 +72,16 @@ def upload_file():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             db.session.add(Material(filename=filename, user_id=current_user.id, schedule_id=request.args.get('task_id')))
             db.session.commit()
-            material = Material.query.all()
 
             task  = Task.query.get(request.args.get('task_id'))
             subject = Subject.query.get(task.subject_id)
             material = Material.query.filter(Material.schedule_id == request.args.get('task_id'))
-        return render_template('task.html', task=task, subject=subject, material_list=material)
+        return render_template('task.html', task=task, subject=subject, material_list=material, comments=comments)
     return render_template('upload_file.html', subjects=Subject.query.all())
 
 @app.route('/uploads/<filename>')
 @login_required
 def uploaded_file(filename):
-    log([app.config['UPLOAD_FOLDER'], filename])
     try:
         return send_from_directory(app.config['UPLOAD_FOLDER'], filename=filename, as_attachment=False)
     except FileNotFoundError:

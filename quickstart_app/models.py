@@ -49,3 +49,15 @@ class Material(db.Model):
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     schedule_id = db.Column(db.Integer, db.ForeignKey('schedule.id'), nullable=False)
+
+class Comment(db.Model):
+    __tablename__ = 'comments'
+
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    time_added = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+    title = db.Column(db.String(60), nullable=False)
+    comment = db.Column(db.String(510), nullable=False)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    schedule_id = db.Column(db.Integer, db.ForeignKey('schedule.id'), nullable=False)

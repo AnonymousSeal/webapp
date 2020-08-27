@@ -19,7 +19,7 @@
   </h2>
 </section>
 
-<section id=table>
+<section id=table_uploaded_files>
   <table>
     {% for material in material_list %}
       <tr>
@@ -28,6 +28,25 @@
             {{ material.filename }} |
             {{ material.time_added.strftime('%H:%M %d.%m.%Y') }}
           </a>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+</section>
+
+<section id=comment>
+  <h2>Comments |
+    <a href="{{ url_for('add_comment', task_id=task.id) }}" class=button>+</a>
+  </h2>
+</section>
+
+<section id=table_comments>
+  <table>
+    {% for comment in comments %}
+      <tr>
+        <td>
+          <h3>{{ comment.title }} | {{ comment.time_added.strftime('%H:%M %d.%m.%Y') }}</h3>
+          {{ comment.comment }}
         </td>
       </tr>
     {% endfor %}
