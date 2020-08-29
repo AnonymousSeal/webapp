@@ -21,23 +21,23 @@ def index():
 def schedule():
     return render_template('schedule.html', schedule=Task.query.all())
 
-@app.route('/task', methods=['GET', 'POST'])
+@app.route('/task/<task_id>')
 @login_required    # User must be authenticated
-def task():
-    task_id = request.args.get('id')
+def task(task_id):
     task  = Task.query.get(task_id)
     subject = Subject.query.get(task.subject_id)
     material = Material.query.filter(Material.schedule_id == task_id)
     comments = Comment.query.filter(Comment.schedule_id == task_id)
     return render_template('task.html', task=task, subject=subject, material_list=material, comments=comments)
 
-@app.route('/add_comment', methods=['GET', 'POST'])
+@app.route('/add_comment/<task_id>', methods=['GET', 'POST'])
 @login_required    # User must be authenticated
-def add_comment():
+def add_comment(task_id):
     if request.method == 'POST':
-        db.session.add(Comment(title=request.form['title'], comment=request.form['comment'], user_id=current_user.id, schedule_id=request.args.get('task_id')))
+        db.session.add(Comment(title=request.form['title'], comment=request.form['comment'], user_id=current_user.id, schedule_id=task_id))
         db.session.commit()
-        return render_template('task.html', id=request.args.get('task_id'))
+
+        return redirect(url_for('task', task_id=task_id))
     return render_template('add_comment.html')
 
 @app.route('/add_task', methods=['GET', 'POST'])
@@ -47,15 +47,12 @@ def add_task():
         db.session.add(Task(name=request.form['name'], description=request.form['description'], deadline=datetime.strptime(request.form['deadline'], '%d.%m.%Y'), user_id=current_user.id, subject_id=request.form['subject']))
         db.session.commit()
 
-        task  = Task.query.get(request.args.get('task_id'))
-        subject = Subject.query.get(task.subject_id)
-        material = Material.query.filter(Material.schedule_id == request.args.get('task_id'))
-        return render_template('task.html', task=task, subject=subject, material_list=material, comments=comments)
+        return redirect(url_for('schedule'))
     return render_template('add_task.html', subjects=Subject.query.all())
 
-@app.route('/upload_file', methods=['GET', 'POST'])
+@app.route('/upload_file/<task_id>', methods=['GET', 'POST'])
 @login_required    # User must be authenticated
-def upload_file():
+def upload_file(task_id):
     if request.method == 'POST':
         # check if the post request has the file part
         if 'file' not in request.files:
@@ -70,13 +67,10 @@ def upload_file():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            db.session.add(Material(filename=filename, user_id=current_user.id, schedule_id=request.args.get('task_id')))
+            db.session.add(Material(filename=filename, user_id=current_user.id, schedule_id=task_id))
             db.session.commit()
 
-            task  = Task.query.get(request.args.get('task_id'))
-            subject = Subject.query.get(task.subject_id)
-            material = Material.query.filter(Material.schedule_id == request.args.get('task_id'))
-        return render_template('task.html', task=task, subject=subject, material_list=material, comments=comments)
+        return redirect(url_for('task', task_id=task_id))
     return render_template('upload_file.html', subjects=Subject.query.all())
 
 @app.route('/uploads/<filename>')

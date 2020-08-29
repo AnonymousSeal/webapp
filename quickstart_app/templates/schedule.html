@@ -12,7 +12,7 @@
     {% for task in schedule %}
       <tr>
         <td>
-          <a href="{{ url_for('task', id=task.id) }}">
+          <a href="{{ url_for('task', task_id=task.id) }}">
             {{ task.name }}
           </a>
         </td>
