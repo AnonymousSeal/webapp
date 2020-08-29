@@ -80,3 +80,9 @@ def uploaded_file(filename):
         return send_from_directory(app.config['UPLOAD_FOLDER'], filename=filename, as_attachment=False)
     except FileNotFoundError:
         abort(404)
+
+@app.route('/profile')
+@login_required
+def profile():
+    user = User.query.get(current_user.id)
+    return render_template('profile.html', user=user)
