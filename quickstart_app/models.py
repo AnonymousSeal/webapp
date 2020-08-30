@@ -14,11 +14,15 @@ class User(db.Model, UserMixin):
     # to search case insensitively when USER_IFIND_MODE is 'nocase_collation'.
     username = db.Column(db.String(100, collation='NOCASE'), nullable=False, unique=True)
     password = db.Column(db.String(255), nullable=False, server_default='')
-    #email_confirmed_at = db.Column(db.DateTime())
+
+    image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
 
     # User information
     first_name = db.Column(db.String(100, collation='NOCASE'), nullable=False, server_default='')
     last_name = db.Column(db.String(100, collation='NOCASE'), nullable=False, server_default='')
+
+    def __repr__(self):
+        return f"User('{self.username}', '{self.image_file}')"
 
 class Task(db.Model):
     __tablename__ = 'schedule'
@@ -33,11 +37,20 @@ class Task(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'), nullable=False)
 
+    material = db.relationship('Material', backref='uploads', lazy=True)
+    comments = db.relationship('Comment', backref='comments', lazy=True)
+
+    def __repr__(self):
+        return f"Task('{self.name}', '{self.description}', '{self.deadline}')"
+
 class Subject(db.Model):
     __tablename__ = 'subjects'
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     name = db.Column(db.String(30), nullable=False)
+
+    def __repr__(self):
+        return f"Subject('{self.name}')"
 
 class Material(db.Model):
     __tablename__ = 'material'
@@ -50,6 +63,9 @@ class Material(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     schedule_id = db.Column(db.Integer, db.ForeignKey('schedule.id'), nullable=False)
 
+    def __repr__(self):
+        return f"Material('{self.time_added}', '{self.filename}')"
+
 class Comment(db.Model):
     __tablename__ = 'comments'
 
@@ -61,3 +77,6 @@ class Comment(db.Model):
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     schedule_id = db.Column(db.Integer, db.ForeignKey('schedule.id'), nullable=False)
+
+    def __repr__(self):
+        return f"Comment('{self.time_added}', '{self.title}', '{self.comment}')"

@@ -14,7 +14,7 @@
 
 <section id=table_uploaded_files>
   <table>
-    {% for material in material_list %}
+    {% for material in task.material %}
       <tr>
         <td>
           <a href="{{ url_for('uploaded_file', filename=material.filename)}}">
@@ -35,7 +35,7 @@
 
 <section id=table_comments>
   <table>
-    {% for comment in comments %}
+    {% for comment in task.comments %}
       <tr>
         <td>
           <h3>{{ comment.title }} | {{ comment.time_added.strftime('%H:%M %d.%m.%Y') }}</h3>

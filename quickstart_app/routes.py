@@ -28,7 +28,7 @@ def task(task_id):
     subject = Subject.query.get(task.subject_id)
     material = Material.query.filter(Material.schedule_id == task_id)
     comments = Comment.query.filter(Comment.schedule_id == task_id)
-    return render_template('task.html', task=task, subject=subject, material_list=material, comments=comments)
+    return render_template('task.html', task=task, subject=subject)
 
 @app.route('/add_comment/<task_id>', methods=['GET', 'POST'])
 @login_required    # User must be authenticated
@@ -85,4 +85,5 @@ def uploaded_file(filename):
 @login_required
 def profile():
     user = User.query.get(current_user.id)
-    return render_template('profile.html', user=user)
+    image_file = url_for('static', filename='profile_pictures/' + current_user.image_file)
+    return render_template('profile.html', user=user, image_file=image_file)
