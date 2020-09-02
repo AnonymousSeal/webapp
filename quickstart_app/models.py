@@ -16,13 +16,14 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(255), nullable=False, server_default='')
 
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
+    status = db.Column(db.String(20), nullable=False, default='user')
 
     # User information
     first_name = db.Column(db.String(100, collation='NOCASE'), nullable=False, server_default='')
     last_name = db.Column(db.String(100, collation='NOCASE'), nullable=False, server_default='')
 
     def __repr__(self):
-        return f"User('{self.username}', '{self.image_file}')"
+        return f"User('{self.username}', '{self.status}', '{self.image_file}')"
 
 class Task(db.Model):
     __tablename__ = 'schedule'

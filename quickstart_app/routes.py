@@ -1,5 +1,5 @@
 from quickstart_app.models import User, Task, Subject, Material, Comment
-from quickstart_app.tools import allowed_file, log
+from quickstart_app.tools import allowed_file, log, make_admin, add_subject
 from quickstart_app import app, db
 from flask import render_template, request, redirect, url_for, send_from_directory, abort, flash
 from flask_login import current_user
@@ -86,4 +86,18 @@ def uploaded_file(filename):
 def profile():
     user = User.query.get(current_user.id)
     image_file = url_for('static', filename='profile_pictures/' + current_user.image_file)
-    return render_template('profile.html', user=user, image_file=image_file)
+    return render_template('profile.html', title='Profile', user=user, image_file=image_file)
+
+@app.route('/admin_page', methods=['GET', 'POST'])
+@login_required
+def admin_page():
+    user = User.query.get(current_user.id)
+    if user.status != 'admin':
+        flash('Only admins can view this page.')
+        return redirect(url_for('profile'))
+
+    if request.method == 'POST':
+        add_subject(request.form['name'])
+    admins = User.query.filter_by(status='admin').all()
+    #users = User.query.filter_by(status='user').all()
+    return render_template('admin_page.html', title='Admin Page', admins=admins)

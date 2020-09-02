@@ -3,5 +3,6 @@
 
 <img src="{{ image_file }}">
 <h1>{{user.username}}</h1>
+<a href="{{ url_for('admin_page') }}">{{user.status}}</a>
 
 {% endblock body %}

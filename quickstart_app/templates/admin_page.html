@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block body %}
+
+<h1>Admins</h1>
+{% for admin in admins %}
+{{ admin.username }}
+{% endfor %}
+
+<section id="add_subject">
+  <form action="" method="POST">
+    <input type="text" name="name" placeholder="subject">
+    <input type="submit" value="Add"><br>
+  </form>
+</section>
+
+{% endblock body %}
