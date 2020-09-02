@@ -16,6 +16,13 @@
     {% endif %}
   </head>
   <body>
+    <section>
+      <div class="topnav">
+        <a class="active" href="{{url_for('index')}}">Home</a>
+        <a href="{{url_for('schedule')}}">Schedule</a>
+        <a href="{{url_for('profile')}}">Profile</a>
+      </div>
+    </section>
 
     <div class="container">
       {% block body %}{% endblock body %}
