@@ -10,12 +10,12 @@ section {
 
 h1{
   font-size: 2em;
-  color: #B75CD5;
+  color: #C20253;
 }
 
 h2{
   font-size: 1.5em;
-  color: #C20253;
+  color: #B75CD5;
 }
 h3{
   font-size: 1.25em;
@@ -37,8 +37,9 @@ th, td {
 
 /* Add a black background color to the top navigation */
 .topnav {
-  background-color: #333;
+  background-color: #1E2127;
   overflow: hidden;
+  border-bottom: 0.1em solid #333;
 }
 
 /* Style the links inside the navigation bar */

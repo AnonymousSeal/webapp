@@ -9,6 +9,7 @@ class User(db.Model, UserMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     active = db.Column('is_active', db.Boolean(), nullable=False, server_default='1')
+    # TODO: time_added = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     # User authentication information. The collation='NOCASE' is required
     # to search case insensitively when USER_IFIND_MODE is 'nocase_collation'.
@@ -30,6 +31,7 @@ class Task(db.Model):
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     time_added = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    # TODO:  time_updated = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(250), nullable=False)
@@ -58,6 +60,7 @@ class Material(db.Model):
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     time_added = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    # TODO:  time_updated = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     filename = db.Column(db.String(255), nullable=False)
 
@@ -72,6 +75,7 @@ class Comment(db.Model):
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     time_added = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    # TODO:  time_updated = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     title = db.Column(db.String(60), nullable=False)
     comment = db.Column(db.String(510), nullable=False)
