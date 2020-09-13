@@ -1,5 +1,6 @@
 from quickstart_app.models import User, Task, Subject, Material, Comment
 from quickstart_app.tools import allowed_file, log, make_admin, add_subject
+from quickstart_app.Forms import RegistrationForm, LoginForm
 from quickstart_app import app, db
 from flask import render_template, request, redirect, url_for, send_from_directory, abort, flash
 from flask_login import current_user
@@ -10,19 +11,38 @@ import os
 
 user_manager = UserManager(app, db, User)   # Setup Flask-User and specify the User data-model
 
-# The Home page is accessible to anyone
+
 @app.route('/')
+@app.route('/home')
 def index():
     return render_template('index.html')
 
-# The Members page is only accessible to authenticated users via the @login_required decorator
 @app.route('/schedule')
-@login_required    # User must be authenticated
+@login_required
 def schedule():
     return render_template('schedule.html', schedule=Task.query.all())
 
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        flash(f'Account created for {form.username.data}!', 'success')
+        return redirect(url_for('index'))
+    return render_template('register.html', title='Register', form=form)
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        if form.email.data == 'a@a.a' and form.password.data == 'password':
+            flash('You have been logged in!', 'success')
+            return redirect(url_for('index'))
+        else:
+            flash('Login Unsuccessful. Please check username and password!', 'danger')
+    return render_template('login.html', title='Login', form=form)
+
 @app.route('/task/<task_id>')
-@login_required    # User must be authenticated
+@login_required
 def task(task_id):
     task  = Task.query.get(task_id)
     subject = Subject.query.get(task.subject_id)
