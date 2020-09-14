@@ -6,8 +6,14 @@
       <a href="{{ url_for('profile') }}">Profile</a>
     </h2>
   </div>
+  {% if current_user.is_authenticated %}
   <div class="border-top pt-3">
-    <a href="{{ url_for('register') }}">Register</a> |
-    <a href="{{ url_for('login') }}">Sign in</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
   </div>
+  {% else %}
+    <div class="border-top pt-3">
+      <a href="{{ url_for('register') }}">Register</a> |
+      <a href="{{ url_for('login') }}">Login</a>
+    </div>
+  {% endif %}
 {% endblock body %}
