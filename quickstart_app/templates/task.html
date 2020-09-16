@@ -2,29 +2,25 @@
 {% block body %}
 
 <section id=title>
-  <h1>{{ subject.name }} | {{ task.name }}</h1>
-  {{ task.description }}<br>
+  <h1>{{ task.name }}</h1>
+  <span class="text-muted">{{ subject.name }}</span><br><br>
+  {{ task.description }}<br><br>
 </section>
 
 <section id=upload>
   <h2>Uploads |
     <a href="{{ url_for('upload_file', task_id=task.id) }}" class=button>+</a>
-  </h2>
+  </h2><br>
 </section>
 
 <section id=table_uploaded_files>
-  <table>
-    {% for material in task.material %}
-      <tr>
-        <td>
-          <a href="{{ url_for('uploaded_file', filename=material.filename)}}">
-            {{ material.filename }} |
-            {{ material.time_added.strftime('%H:%M %d.%m.%Y') }}
-          </a>
-        </td>
-      </tr>
-    {% endfor %}
-  </table>
+  {% for material in task.material %}
+    <a href="{{ url_for('uploaded_file', filename=material.filename)}}">
+      {{ material.filename }} |
+      {{ material.time_added.strftime('%H:%M %d.%m.%Y') }}
+    </a>
+    <br>
+  {% endfor %}
 </section>
 
 <section id=comment>
@@ -34,16 +30,15 @@
 </section>
 
 <section id=table_comments>
-  <table>
-    {% for comment in task.comments %}
-      <tr>
-        <td>
-          <h3>{{ comment.title }} | {{ comment.time_added.strftime('%H:%M %d.%m.%Y') }}</h3>
-          {{ comment.comment }}
-        </td>
-      </tr>
-    {% endfor %}
-  </table>
+  {% for comment in task.comments %}
+    <div class="border-round bg-black mt mb spaced">
+      <h3>{{ comment.title }}</h3>
+      <span class="text-muted">
+        <small>{{ comment.time_added.strftime('%H:%M %d.%m.%Y') }}</small>
+      </span>
+      <br><br>
+      <p>{{ comment.comment }}</p>
+    </div>
+  {% endfor %}
 </section>
-
 {% endblock body %}

@@ -1,8 +1,12 @@
 {% extends "base.html" %}
 {% block body %}
 
-<img src="{{ image_file }}">
-<h1>{{user.username}}</h1>
-<a href="{{ url_for('admin_page') }}">{{user.status}}</a>
+<img class="profile-picture float-right" src="{{ image_file }}" alt="profile picture">
+<div>
+  <h1>{{user.username}}</h1><br>
+  email: <em>{{user.email}}</em><br>
+  status: <a href="{{ url_for('admin_page') }}">{{user.status}}</a>
+  <br><br><br><br><br><br>
+</div>
 
 {% endblock body %}

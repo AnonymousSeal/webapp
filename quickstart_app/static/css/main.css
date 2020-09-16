@@ -1,7 +1,27 @@
+:root{
+  font-size: 16px;
+  --text-primary: white;
+  --bg-primary: #1E2127;
+}
+
 body {
-  background: #1E2127;
-  color: #87B966;
-  font-size: 1.25em;
+  font-size: 1rem;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  margin: 0;
+  padding: 0;
+}
+
+body::-webkit-scrollbar{
+  width: 0.25rem;
+}
+
+body::-webkit-scrollbar-track{
+  background: #1e1e24;
+}
+
+body::-webkit-scrollbar-thumb{
+  background: #3E4147;
 }
 
 section {
@@ -9,20 +29,20 @@ section {
 }
 
 h1{
-  font-size: 2em;
+  font-size: 2rem;
   color: #C20253;
 }
 
 h2{
-  font-size: 1.5em;
+  font-size: 1.5rem;
   color: #B75CD5;
 }
 h3{
-  font-size: 1.25em;
+  font-size: 1.45rem;
 }
 
 a:link, a:visited {
-  color: #97C976;
+  color: #blue;
   text-decoration: none;
 }
 a:link:active, a:visited:active {
@@ -35,11 +55,49 @@ th, td {
   border-bottom: 0px solid #ddd;
 }
 
+.bg-black{
+  background-color: black;
+}
+
+.border-round{
+  border: 1px solid black;
+  border-radius:5px;
+}
+
+hr{
+  border: 1px solid white;
+}
+
+.wrap{
+  width: 600px;
+  margin: auto;
+  background: #1a1a1a;
+}
+
+h1, h2, h3, h4, h5, h6{
+  display: inline;
+}
+
+.mt{
+  margin-top: 5px;
+}
+
+.mb{
+  margin-bottom: 5px;
+}
+
+.spaced{
+  padding: 10px;
+}
+
+.ml{
+  margin-left: 20px;
+}
+
 /* Add a black background color to the top navigation */
 .topnav {
-  background-color: #1E2127;
+  background-color: black;
   overflow: hidden;
-  border-bottom: 0.1em solid #333;
 }
 
 /* Style the links inside the navigation bar */
@@ -54,12 +112,13 @@ th, td {
 
 /* Change the color of links on hover */
 .topnav a:hover {
-  background-color: #ddd;
-  color: black;
+  background-color: #1E2127;
 }
 
-/* Add a color to the active/current link */
-.topnav a.active {
-  background-color: #4CAF50;
-  color: white;
+.float_right{
+  float: right;
+}
+
+.profile-picture{
+  width: 200px;
 }
