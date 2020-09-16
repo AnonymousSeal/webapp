@@ -11,9 +11,6 @@ import os
 
 @app.route('/')
 @app.route('/home')
-def index():
-    return render_template('index.html')
-
 @app.route('/schedule')
 @login_required
 def schedule():
@@ -105,7 +102,7 @@ def upload_file(task_id):
 @login_required
 def uploaded_file(filename):
     try:
-        return send_from_directory(app.config['UPLOAD_FOLDER'], title=filename, filename=filename, as_attachment=False)
+        return send_from_directory(app.config['UPLOAD_FOLDER'], filename=filename, as_attachment=False)
     except FileNotFoundError:
         abort(404)
 
@@ -134,4 +131,4 @@ def admin_page():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('index'))
+    return redirect(url_for('login'))
