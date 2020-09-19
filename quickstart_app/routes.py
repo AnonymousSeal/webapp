@@ -1,6 +1,6 @@
 from quickstart_app.models import User, Task, Subject, Material, Comment
-from quickstart_app.tools import allowed_file, log, make_admin, add_subject
-from quickstart_app.Forms import RegistrationForm, LoginForm
+from quickstart_app.tools import add_subject, allowed_file, make_admin
+from quickstart_app.Forms import RegistrationForm, LoginForm, CommentForm
 from quickstart_app import app, db, bcrypt
 from flask import render_template, request, redirect, url_for, send_from_directory, abort, flash, request
 from flask_login import login_user, current_user, logout_user, login_required
@@ -51,19 +51,20 @@ def login():
 def task(task_id):
     task  = Task.query.get(task_id)
     subject = Subject.query.get(task.subject_id)
-    material = Material.query.filter(Material.schedule_id == task_id)
-    comments = Comment.query.filter(Comment.schedule_id == task_id)
     return render_template('task.html', title=task.name, task=task, subject=subject)
 
 @app.route('/add_comment/<int:task_id>', methods=['GET', 'POST'])
 @login_required
 def add_comment(task_id):
-    if request.method == 'POST':
-        db.session.add(Comment(title=request.form['title'], comment=request.form['comment'], user_id=current_user.id, schedule_id=task_id))
-        db.session.commit()
+    form = CommentForm()
 
+    if form.validate_on_submit():
+        comment = Comment(title=form.title.data, comment=form.content.data, author_id=current_user.id, task_id=task_id)
+        db.session.add(comment)
+        db.session.commit()
+        
         return redirect(url_for('task', task_id=task_id))
-    return render_template('add_comment.html', title='Add Comment')
+    return render_template('add_comment.html', title='Add Comment', form=form)
 
 @app.route('/add_task', methods=['GET', 'POST'])
 @login_required
