@@ -7,22 +7,6 @@
   {{ task.description }}<br><br>
 </section>
 
-<section id=upload>
-  <h2>Uploads |
-    <a href="{{ url_for('upload_file', task_id=task.id) }}" class=button>+</a>
-  </h2><br>
-</section>
-
-<section id=table_uploaded_files>
-  {% for material in task.material %}
-    <a href="{{ url_for('uploaded_file', filename=material.filename)}}">
-      {{ material.filename }} |
-      {{ material.time_added.strftime('%H:%M %d.%m.%Y') }}
-    </a>
-    <br>
-  {% endfor %}
-</section>
-
 <section id=comment>
   <h2>Comments |
     <a href="{{ url_for('add_comment', task_id=task.id) }}" class=button>+</a>
@@ -30,7 +14,7 @@
 </section>
 
 <section id=table_comments>
-  {% for comment in task.comments %}
+  {% for comment in task.comment %}
     <div class="border-round bg-black mt mb spaced">
       <h3>{{ comment.title }}</h3>
       <span class="text-muted">
@@ -38,6 +22,7 @@
       </span>
       <br><br>
       <p>{{ comment.comment }}</p>
+      <p>{{ comment.material.filename }}</p>
     </div>
   {% endfor %}
 </section>
