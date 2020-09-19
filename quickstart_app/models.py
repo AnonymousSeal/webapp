@@ -4,11 +4,13 @@ from datetime import datetime
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    try:
+        return User.query.get(int(user_id))
+    except:
+        return None
 
 
 class User(db.Model, UserMixin):
-    __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
     time_added = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
@@ -20,11 +22,12 @@ class User(db.Model, UserMixin):
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
     status = db.Column(db.String(20), nullable=False, default='user')
 
+    comment = db.relationship('Comment', backref='author', lazy=True, foreign_keys="Comment.author_id")
+
     def __repr__(self):
         return f"User('{self.username}', '{self.status}', '{self.email}', '{self.image_file}')"
 
 class Task(db.Model):
-    __tablename__ = 'schedule'
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     time_added = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
@@ -34,17 +37,15 @@ class Task(db.Model):
     description = db.Column(db.String(250), nullable=False)
     deadline = db.Column(db.DateTime, nullable=False)
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    subject_id = db.Column(db.Integer, db.ForeignKey('subject.id'), nullable=False)
 
-    material = db.relationship('Material', backref='uploads', lazy=True)
-    comments = db.relationship('Comment', backref='comments', lazy=True)
+    comment = db.relationship('Comment', backref='task', lazy=True, foreign_keys="Comment.task_id")
 
     def __repr__(self):
         return f"Task('{self.name}', '{self.description}', '{self.deadline}')"
 
 class Subject(db.Model):
-    __tablename__ = 'subjects'
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     name = db.Column(db.String(30), nullable=False)
@@ -53,7 +54,6 @@ class Subject(db.Model):
         return f"Subject('{self.name}')"
 
 class Material(db.Model):
-    __tablename__ = 'material'
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     time_added = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
@@ -61,14 +61,12 @@ class Material(db.Model):
 
     filename = db.Column(db.String(255), nullable=False)
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    schedule_id = db.Column(db.Integer, db.ForeignKey('schedule.id'), nullable=False)
+    upload_id = db.Column(db.Integer, db.ForeignKey('comment.id'), nullable=False)
 
     def __repr__(self):
         return f"Material('{self.time_added}', '{self.filename}')"
 
 class Comment(db.Model):
-    __tablename__ = 'comments'
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     time_added = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
@@ -77,8 +75,10 @@ class Comment(db.Model):
     title = db.Column(db.String(100), nullable=False)
     comment = db.Column(db.Text(), nullable=False)
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    schedule_id = db.Column(db.Integer, db.ForeignKey('schedule.id'), nullable=False)
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    task_id = db.Column(db.Integer, db.ForeignKey('task.id'), nullable=False)
+
+    material = db.relationship('Material', backref='upload', lazy=True, foreign_keys="Material.upload_id")
 
     def __repr__(self):
         return f"Comment('{self.time_added}', '{self.title}')"
