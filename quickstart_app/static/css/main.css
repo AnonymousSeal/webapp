@@ -72,6 +72,7 @@ hr{
   width: 600px;
   margin: auto;
   background: #1a1a1a;
+  overflow: hidden;
 }
 
 h1, h2, h3, h4, h5, h6{
@@ -119,6 +120,16 @@ h1, h2, h3, h4, h5, h6{
   float: right;
 }
 
-.profile-picture{
-  width: 200px;
+.account-img{
+  height: 10rem;
+  width: 10rem;
+  margin-right: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.img-tiny{
+  height: 3rem;
+  width: 3rem;
+  margin-right: 0.4rem;
+  margin-bottom: 0.33rem;
 }

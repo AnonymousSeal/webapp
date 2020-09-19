@@ -95,15 +95,16 @@ def profile():
 @login_required
 def admin_page():
     user = User.query.get(current_user.id)
-    if user.status != 'admin':
+    if user.status == 'user':
         flash('Only admins can view this page.', 'info')
         return redirect(url_for('profile'))
 
     if request.method == 'POST':
         add_subject(request.form['name'])
     admins = User.query.filter_by(status='admin').all()
+    god_mode = User.query.filter_by(status='god_mode').all()
     #users = User.query.filter_by(status='user').all()
-    return render_template('admin_page.html', title='Admin Page', admins=admins)
+    return render_template('admin_page.html', title='Admin Page', admins=admins+god_mode)
 
 @app.route('/logout')
 @login_required
