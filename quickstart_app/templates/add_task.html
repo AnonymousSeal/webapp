@@ -3,14 +3,16 @@
 
 <section id=add_new_task>
   <form action="/add_task" method="POST">
-    <input type="text" name="name" placeholder="name">
-    <input type="text" name="description" placeholder="description">
-    <input type="date" name="deadline" placeholder="deadline (eg. 23.10.2020)">
+    <input type="text" name="name" placeholder="name"><br><br>
+    <input type="text" name="description" placeholder="description"><br><br>
+    <input type="date" name="deadline_date">
+    <input type="time" name="deadline_time"><br><br>
     <select name="subject" id="subject">
       {% for subject in subjects %}
         <option name="subject" value="{{ subject.id }}">{{ subject.name }}</option>
       {% endfor %}
     </select>
+    <br><br>
     <input type="submit" id="add" value="submit">
   </form>
 </section>

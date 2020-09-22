@@ -73,16 +73,21 @@ def add_comment(task_id):
         db.session.commit()
         form.vars = []
 
-
         return redirect(url_for('task', task_id=task_id))
-
     return render_template('add_comment.html', title='Add Comment', form=form)
 
 @app.route('/add_task', methods=['GET', 'POST'])
 @login_required
 def add_task():
+    if current_user.status == 'user':
+        return redirect(url_for('profile', username=current_user.username))
     if request.method == 'POST':
-        db.session.add(Task(name=request.form['name'], description=request.form['description'], deadline=datetime.strptime(request.form['deadline'], '%Y-%m-%d'), user_id=current_user.id, subject_id=request.form['subject']))
+        db.session.add(Task(name=request.form['name'],
+                            description=request.form['description'],
+                            deadline=datetime.strptime(request.form['deadline_date'] + \
+                            request.form['deadline_time'], '%Y-%m-%d%H:%M'),
+                            user_id=current_user.id,
+                            subject_id=request.form['subject']))
         db.session.commit()
 
         return redirect(url_for('schedule'))
