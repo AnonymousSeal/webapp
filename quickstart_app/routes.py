@@ -1,5 +1,5 @@
 from quickstart_app.models import User, Task, Subject, Material, Comment
-from quickstart_app.tools import add_subject, make_admin
+from quickstart_app.tools import add_subject, give_status, get_user_by_username
 from quickstart_app.Forms import RegistrationForm, LoginForm, CommentUploadForm
 from quickstart_app import app, db, bcrypt
 from flask import render_template, request, redirect, url_for, send_from_directory, abort, flash, request
@@ -96,25 +96,24 @@ def uploaded_file(filename):
     except FileNotFoundError:
         abort(404)
 
-@app.route('/profile')
+@app.route('/profile/<string:username>')
 @login_required
-def profile():
-    user = User.query.get(current_user.id)
-    image_file = url_for('static', filename='profile_pictures/' + current_user.image_file)
-    return render_template('profile.html', title='Profile', user=user, image_file=image_file)
+def profile(username):
+    user = get_user_by_username(username)
+    image_file = url_for('static', filename='profile_pictures/' + user.image_file)
+    return render_template('profile.html', title=user.username, user=user, image_file=image_file)
 
 @app.route('/config', methods=['GET', 'POST'])
 @login_required
 def config():
     user = User.query.get(current_user.id)
     if user.status == 'user':
-        return redirect(url_for('profile'))
+        return redirect(url_for('profile', username=current_user.username))
 
     if request.method == 'POST':
         add_subject(request.form['name'])
     admins = User.query.filter_by(status='admin').all()
     god_mode = User.query.filter_by(status='god_mode').all()
-    #users = User.query.filter_by(status='user').all()
     return render_template('config.html', title='Config', admins=admins+god_mode)
 
 @app.route('/logout')

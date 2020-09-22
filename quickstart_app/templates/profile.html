@@ -5,7 +5,11 @@
 <div>
   <h1>{{user.username}}</h1><br>
   email: <em>{{user.email}}</em><br>
-  status: <a href="{{ url_for('config') }}">{{user.status}}</a>
+  {% if current_user.username == user.username %}
+    status: <a href="{{ url_for('config') }}">{{user.status}}</a>
+  {% else %}
+    status: {{user.status}}
+  {% endif %}
 </div>
 
 {% endblock body %}

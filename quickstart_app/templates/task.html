@@ -17,7 +17,7 @@
       <div class="bb-grey mb">
         <img class="rounded-circle img-tiny" src="{{ url_for('static', filename='profile_pictures/' + comment.author.image_file) }}" alt="profile picture">
         <span class="">
-          <a href="{{ url_for('profile') }}">{{ comment.author.username }}</a>
+          <a href="{{ url_for('profile', username=comment.author.username) }}">{{ comment.author.username }}</a>
           <span class="text-muted">
             <small>{{ comment.time_added.strftime('%H:%M %d.%m.%Y') }}</small>
           </span>
