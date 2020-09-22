@@ -103,12 +103,11 @@ def profile():
     image_file = url_for('static', filename='profile_pictures/' + current_user.image_file)
     return render_template('profile.html', title='Profile', user=user, image_file=image_file)
 
-@app.route('/admin_page', methods=['GET', 'POST'])
+@app.route('/config', methods=['GET', 'POST'])
 @login_required
-def admin_page():
+def config():
     user = User.query.get(current_user.id)
     if user.status == 'user':
-        flash('Only admins can view this page.', 'info')
         return redirect(url_for('profile'))
 
     if request.method == 'POST':
@@ -116,7 +115,7 @@ def admin_page():
     admins = User.query.filter_by(status='admin').all()
     god_mode = User.query.filter_by(status='god_mode').all()
     #users = User.query.filter_by(status='user').all()
-    return render_template('admin_page.html', title='Admin Page', admins=admins+god_mode)
+    return render_template('config.html', title='Config', admins=admins+god_mode)
 
 @app.route('/logout')
 @login_required
