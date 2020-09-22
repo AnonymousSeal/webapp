@@ -51,7 +51,7 @@ def login():
 def task(task_id):
     task = Task.query.get(task_id)
     subject = Subject.query.get(task.subject_id)
-    return render_template('task.html', title=task.name, task=task, subject=subject, comments=)
+    return render_template('task.html', title=task.name, task=task, subject=subject)
 
 @app.route('/add_comment/<int:task_id>', methods=['GET', 'POST'])
 @login_required
