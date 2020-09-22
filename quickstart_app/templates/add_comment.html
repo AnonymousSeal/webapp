@@ -1,39 +1,59 @@
 {% extends "base.html" %}
 {% block body %}
   <div class="content-section">
-    <form method="POST" action="">
-      <fieldset class="form-group">
-        {{ form.hidden_tag() }}
+    <fieldset class="form-group">
+      <form method="POST" enctype=multipart/form-data>
+        {{ form.upload.hidden_tag() }}
+        {{ form.upload.csrf_token() }}
         <div class="form-group">
-          {{ form.title.label(class="form-control-label") }}
-          {% if form.title.errors %}
-            {{ form.title(class="form-control form-control-lg is-invalid") }}
+          {% if form.upload.upload.errors %}
+            {{ form.upload.upload(class="form-control form-control-lg is-invalid") }}
             <div class="invalid-feedback">
-              {% for error in form.title.errors %}
+              {% for error in form.upload.upload.errors %}
                 <span>{{ error }}</span>
               {% endfor %}
             </div>
           {% else %}
-            {{ form.title(class="form-control form-control-lg") }}
+            {{ form.upload.upload(class="form-control form-control-lg") }}
           {% endif %}
         </div>
         <div class="form-group">
-          {{ form.content.label(class="form-control-label") }}
-          {% if form.content.errors %}
-            {{ form.content(class="form-control form-control-lg is-invalid") }}
+          <input type="submit" name="add" value="Add" class="btn btn-outline-info">
+        </div>
+      </form>
+      <form method="POST" action="">
+        {{ form.comment.hidden_tag() }}
+        {{ form.comment.csrf_token() }}
+        <div class="form-group">
+          {{ form.comment.title.label(class="form-control-label") }}
+          {% if form.comment.title.errors %}
+            {{ form.comment.title(class="form-control form-control-lg is-invalid") }}
             <div class="invalid-feedback">
-              {% for error in form.content.errors %}
+              {% for error in form.comment.title.errors %}
                 <span>{{ error }}</span>
               {% endfor %}
             </div>
           {% else %}
-            {{ form.content(class="form-control form-control-lg") }}
+            {{ form.comment.title(class="form-control form-control-lg") }}
           {% endif %}
         </div>
         <div class="form-group">
-          {{ form.submit(class="btn btn-outline-info") }}
+          {{ form.comment.content.label(class="form-control-label") }}
+          {% if form.comment.content.errors %}
+            {{ form.comment.content(class="form-control form-control-lg is-invalid") }}
+            <div class="invalid-feedback">
+              {% for error in form.comment.content.errors %}
+                <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% else %}
+            {{ form.comment.content(class="form-control form-control-lg") }}
+          {% endif %}
         </div>
-      </fieldset>
-    </form>
+        <div class="form-group">
+          <input type="submit" name="comment" value="Comment" class="btn btn-outline-info">
+        </div>
+      </form>
+    </fieldset>
   </div>
 {% endblock body %}

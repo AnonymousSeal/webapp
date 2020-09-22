@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, StringField, TextAreaField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, StringField, TextAreaField, FileField, FormField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from quickstart_app.models import User
 
@@ -37,4 +37,15 @@ class LoginForm(FlaskForm):
 class CommentForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     content = TextAreaField('Content', validators=[DataRequired()])
-    submit = SubmitField('Comment')
+
+class UploadForm(FlaskForm):
+    upload = FileField('Upload', validators=[DataRequired()])
+
+    # def validate_extension(self, upload):
+    #     if not '.' in upload.data or not upload.data.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']:
+    #         raise ValidationError('This file extension is not allowed')
+
+class CommentUploadForm(FlaskForm):
+    comment = FormField(CommentForm)
+    upload = FormField(UploadForm)
+    vars = []

@@ -25,7 +25,11 @@
       </div>
       <h3>{{ comment.title }}</h3>
       <p>{{ comment.comment }}</p>
-      <p>{{ comment.material.filename }}</p>
+      {% for material in comment.material %}
+        <span class="ml">
+          <a href="{{ url_for('uploaded_file', filename=material.filename) }}">{{ material.filename }}</a><br>
+        </span>
+      {% endfor %}
     </div>
   {% endfor %}
 </section>
