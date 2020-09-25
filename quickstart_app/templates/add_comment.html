@@ -22,7 +22,7 @@
           <input type="submit" name="add" value="Add" class="btn btn-outline-info">
         </div>
       </form>
-      {% for filename in form.vars %}
+      {% for filename in session['file_chache'] %}
         <div class="border-round spaced mb mt">
           {{ filename }}
         </div>

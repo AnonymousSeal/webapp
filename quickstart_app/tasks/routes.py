@@ -1,5 +1,5 @@
 from flask_login import current_user, login_required
-from flask import render_template, request, redirect, url_for, send_from_directory, abort, current_app, Blueprint
+from flask import render_template, request, redirect, url_for, send_from_directory, abort, current_app, Blueprint, session
 from quickstart_app.models import Task, Subject, Material, Comment
 from quickstart_app.tasks.forms import CommentUploadForm
 from quickstart_app import db
@@ -27,21 +27,32 @@ def task(task_id):
 @login_required
 def add_comment(task_id):
     form = CommentUploadForm()
+    if not 'file_chache' in session:
+        session['file_chache'] = []
+    if not 'staged_files_location' in session:
+        session['staged_files_location'] = task_id
+    if session['staged_files_location'] != task_id:
+        session['file_chache'] = []
+        session['staged_files_location'] = task_id
 
     if "add" in request.form and form.upload.validate(form):
         filename = secure_filename(form.upload.upload.data.filename)
         form.upload.upload.data.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
         form.vars.append(form.upload.upload.data.filename)
+        if session['file_chache'] != []:
+            session['file_chache'] = session['file_chache'] + [form.upload.upload.data.filename]
+        else:
+            session['file_chache'] = [form.upload.upload.data.filename]
 
     if "comment" in request.form and form.comment.validate(form):
         comment = Comment(title=form.comment.title.data, comment=form.comment.content.data, author_id=current_user.id, task_id=task_id)
         db.session.add(comment)
         db.session.commit()
-        for var in form.vars:
-            material = Material(filename=var, upload_id=comment.id)
+        for filename in session['file_chache']:
+            material = Material(filename=filename, upload_id=comment.id)
             db.session.add(material)
         db.session.commit()
-        form.vars = []
+        session['file_chache'] = []
 
         return redirect(url_for('tasks.task', task_id=task_id))
     return render_template('add_comment.html', title='Add Comment', form=form)
