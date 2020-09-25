@@ -1,8 +1,8 @@
-class ConfigClass(object):
+class Config(object):
     """ Flask application config """
 
     # Flask settings
-    SECRET_KEY = '#dffwr2rRF#DR^@FTFW@&y2763rygwytfe732t2eyf' #already changed
+    SECRET_KEY = '#dffwr2rRF#DR^@FTFW@&y2763rygwytfe732t2eyf'
 
     # Flask-SQLAlchemy settings
     SQLALCHEMY_DATABASE_URI = 'sqlite:///database/quickstart_app.sqlite3'    # File-based SQL database
