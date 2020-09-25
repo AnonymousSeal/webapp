@@ -10,12 +10,12 @@
 
 <section id=comment>
   <h2>Comments |
-    <a href="{{ url_for('add_comment', task_id=task.id) }}" class=button>+</a>
+    <a href="{{ url_for('tasks.add_comment', task_id=task.id) }}" class=button>+</a>
   </h2>
   {% for comment in task.comment %}
     <div class="border-round bg-black mt mb spaced">
       <div class="bb-grey mb">
-        <a href="{{ url_for('profile', username=comment.author.username) }}">
+        <a href="{{ url_for('users.profile', username=comment.author.username) }}">
           <img class="rounded-circle img-tiny" src="{{ url_for('static', filename='profile_pictures/' + comment.author.image_file) }}" alt="profile picture">
           {{ comment.author.username }}
         </a>
@@ -27,7 +27,7 @@
       <p>{{ comment.comment }}</p>
       {% for material in comment.material %}
         <span class="ml">
-          <a href="{{ url_for('uploaded_file', filename=material.filename) }}">{{ material.filename }}</a><br>
+          <a href="{{ url_for('tasks.uploaded_file', filename=material.filename) }}">{{ material.filename }}</a><br>
         </span>
       {% endfor %}
     </div>

@@ -1,5 +1,5 @@
-from quickstart_app import db, app
-from quickstart_app.models import User, Subject
+from quickstart_app import db
+from quickstart_app.models import Subject, User
 
 def add_subject(name):
     db.session.add(Subject(name=name))
@@ -8,6 +8,3 @@ def add_subject(name):
 def give_status(name, status):
     User.query.filter_by(username=name).first().status = status
     db.session.commit()
-
-def get_user_by_username(name):
-    return User.query.filter_by(username=name).first()
