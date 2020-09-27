@@ -38,11 +38,10 @@ def add_comment(task_id):
     if "add" in request.form and form.upload.validate(form):
         filename = secure_filename(form.upload.upload.data.filename)
         form.upload.upload.data.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
-        form.vars.append(form.upload.upload.data.filename)
         if session['file_chache'] != []:
-            session['file_chache'] = session['file_chache'] + [form.upload.upload.data.filename]
+            session['file_chache'] = session['file_chache'] + [filename]
         else:
-            session['file_chache'] = [form.upload.upload.data.filename]
+            session['file_chache'] = [filename]
 
     if "comment" in request.form and form.comment.validate(form):
         comment = Comment(title=form.comment.title.data, comment=form.comment.content.data, author_id=current_user.id, task_id=task_id)
