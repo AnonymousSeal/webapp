@@ -1,15 +1,33 @@
+{% from "_render_field.html" import render_field_1 %}
 {% extends "base.html" %}
 {% block body %}
-
-<img class="rounded-circle account-img float-right" src="{{ image_file }}" alt="profile picture">
-<div>
-  <h1>{{user.username}}</h1><br>
-  email: <em>{{user.email}}</em><br>
-  {% if current_user.username == user.username %}
-    status: <a href="{{ url_for('main.config') }}">{{user.status}}</a>
-  {% else %}
-    status: {{user.status}}
-  {% endif %}
-</div>
-
+  <div class="content-section">
+    <div class="media">
+      <img class="rounded-circle account-img" src="{{ image_file }}" alt="profile picture">
+      <div class="media-body">
+        <h1>{{user.username}}</h1><br>
+        email: <em>{{user.email}}</em><br>
+        {% if current_user.username == user.username %}
+          status: <a href="{{ url_for('main.config') }}">{{user.status}}</a>
+        {% else %}
+          status: {{user.status}}
+        {% endif %}
+      </div>
+    </div>
+    {% if form %}
+      <div class="content-section">
+        <form method="POST" action="">
+          {{ form.hidden_tag() }}
+          <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Profile Info</legend>
+            {{ render_field_1(form.username) }}
+            {{ render_field_1(form.email) }}
+          </fieldset>
+          <div class="form-group">
+            {{ form.submit(class="btn btn-outline-info") }}
+          </div>
+        </form>
+      </div>
+    {% endif %}
+  </div>
 {% endblock body %}

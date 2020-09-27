@@ -1,6 +1,6 @@
 from flask_login import login_user, current_user, logout_user, login_required
-from flask import render_template, redirect, url_for, flash, request, Blueprint
-from quickstart_app.users.forms import RegistrationForm, LoginForm
+from flask import render_template, redirect, url_for, flash, request, Blueprint, current_app
+from quickstart_app.users.forms import RegistrationForm, LoginForm, UpdateProfileForm
 from quickstart_app.users.utils import get_user_by_username
 from quickstart_app.models import User
 from quickstart_app import db, bcrypt
@@ -43,9 +43,21 @@ def logout():
     logout_user()
     return redirect(url_for('users.login'))
 
-@users.route('/profile/<string:username>')
+@users.route('/profile/<string:username>', methods=['GET', 'POST'])
 @login_required
 def profile(username):
     user = get_user_by_username(username)
     image_file = url_for('static', filename='profile_pictures/' + user.image_file)
+    if user == current_user:
+        form = UpdateProfileForm()
+        if form.validate_on_submit():
+            current_user.username = form.username.data
+            current_user.email = form.email.data
+            db.session.commit()
+            flash('Your Profile has been updated!', 'success')
+            return redirect(url_for('users.profile', username=form.username.data))
+        elif request.method == 'GET':
+            form.username.data = current_user.username
+            form.email.data = current_user.email
+        return render_template('profile.html', title=user.username, user=user, image_file=image_file, form=form)
     return render_template('profile.html', title=user.username, user=user, image_file=image_file)
