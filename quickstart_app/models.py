@@ -73,7 +73,7 @@ class Comment(db.Model):
     time_updated = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     title = db.Column(db.String(100), nullable=False)
-    comment = db.Column(db.Text(), nullable=False)
+    comment = db.Column(db.Text())
 
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     task_id = db.Column(db.Integer, db.ForeignKey('task.id'), nullable=False)

@@ -5,7 +5,7 @@ from wtforms.validators import DataRequired, ValidationError
 
 class CommentForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
-    content = TextAreaField('Content', validators=[DataRequired()])
+    content = TextAreaField('Content')
 
 class UploadForm(FlaskForm):
     upload = FileField('Upload', validators=[DataRequired()])
