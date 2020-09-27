@@ -4,7 +4,7 @@ from flask_bcrypt import Bcrypt
 from flask import Flask
 from quickstart_app.config import Config
 
-db = SQLAlchemy()                # Initialize Flask-SQLAlchemy
+db = SQLAlchemy()
 bcrypt = Bcrypt()
 login_manager = LoginManager()
 login_manager.login_view = 'users.login'
