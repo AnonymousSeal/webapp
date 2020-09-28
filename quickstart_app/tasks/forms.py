@@ -1,6 +1,7 @@
 from flask import current_app
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, FileField, FormField
+from flask_wtf.file import FileField, FileAllowed
+from wtforms import StringField, TextAreaField, FormField
 from wtforms.validators import DataRequired, ValidationError
 
 class CommentForm(FlaskForm):
@@ -8,13 +9,8 @@ class CommentForm(FlaskForm):
     content = TextAreaField('Content')
 
 class UploadForm(FlaskForm):
-    upload = FileField('Upload', validators=[DataRequired()])
-
-    # def validate_extension(self, upload):
-    #     if not '.' in upload.data or not upload.data.rsplit('.', 1)[1].lower() in current_app.config['ALLOWED_EXTENSIONS']:
-    #         raise ValidationError('This file extension is not allowed')
+    upload = FileField('Upload', validators=[DataRequired(), FileAllowed(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'doc', 'docx', 'pptx', 'xlsx'])])
 
 class CommentUploadForm(FlaskForm):
     comment = FormField(CommentForm)
     upload = FormField(UploadForm)
-    vars = []
