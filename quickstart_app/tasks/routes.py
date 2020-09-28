@@ -1,7 +1,7 @@
 from flask_login import current_user, login_required
-from flask import render_template, request, redirect, url_for, send_from_directory, abort, current_app, Blueprint, session
+from flask import render_template, request, redirect, url_for, send_from_directory, abort, current_app, Blueprint, session, flash
 from quickstart_app.models import Task, Subject, Material, Comment
-from quickstart_app.tasks.forms import CommentUploadForm
+from quickstart_app.tasks.forms import CommentUploadForm, AddTaskForm
 from quickstart_app import db
 from werkzeug.utils import secure_filename
 from datetime import datetime
@@ -61,17 +61,24 @@ def add_comment(task_id):
 def add_task():
     if current_user.status == 'user':
         return redirect(url_for('users.profile', username=current_user.username))
-    if request.method == 'POST':
-        db.session.add(Task(name=request.form['name'],
-                            description=request.form['description'],
-                            deadline=datetime.strptime(request.form['deadline_date'] + \
-                            request.form['deadline_time'], '%Y-%m-%d%H:%M'),
-                            user_id=current_user.id,
-                            subject_id=request.form['subject']))
-        db.session.commit()
 
+    form = AddTaskForm()
+    form.subject.choices = [(subject.id, subject.name) for subject in Subject.query.all()]
+
+    if request.method == 'POST':
+        print(form.subject.data)
+
+    if form.validate_on_submit():
+        db.session.add(Task(name=form.title.data,
+                            description=form.description.data,
+                            deadline=datetime.combine(form.deadline_date.data,
+                            form.deadline_time.data),
+                            user_id=current_user.id,
+                            subject_id=form.subject.data))
+        db.session.commit()
+        flash('Task has been added.', 'success')
         return redirect(url_for('tasks.schedule'))
-    return render_template('add_task.html', title='Add Task', subjects=Subject.query.all())
+    return render_template('add_task.html', title='Add Task', form=form)
 
 @tasks.route('/uploads/<string:filename>')
 @login_required

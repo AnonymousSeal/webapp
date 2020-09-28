@@ -1,20 +1,39 @@
+{% from "_render_field.html" import render_string_field_like %}
 {% extends "base.html" %}
 {% block body %}
 
 <section id=add_new_task>
-  <form action="/add_task" method="POST">
-    <input type="text" name="name" placeholder="name"><br><br>
-    <input type="text" name="description" placeholder="description"><br><br>
-    <input type="date" name="deadline_date">
-    <input type="time" name="deadline_time"><br><br>
-    <select name="subject" id="subject">
-      {% for subject in subjects %}
-        <option name="subject" value="{{ subject.id }}">{{ subject.name }}</option>
-      {% endfor %}
-    </select>
-    <br><br>
-    <input type="submit" id="add" value="submit">
+  <form action="" method="POST">
+    {{ form.hidden_tag() }}
+    {{ form.csrf_token }}
+    <fieldset>
+      {{ render_string_field_like(form.title) }}
+      {{ render_string_field_like(form.description) }}
+      <div class="form-group">
+        {{ form.deadline_date.label() }}<br>
+        {{ form.deadline_date }}
+        {{ form.deadline_time }}
+      </div>
+      <div class="form-group">
+        {{ form.subject.label() }}<br>
+        {{ form.subject }}
+        {% if form.subject.errors %}
+          {% for error in form.subject.errors %}
+            <span class="text-danger">{{ error }}</span><br>
+          {% endfor %}
+        {% endif %}
+      </div>
+      </fieldset>
+    <div class="form-group">
+      {{ form.submit(class="btn btn-outline-info") }}
+    </div>
   </form>
 </section>
+
+{% if form.errors %}
+  {% for error in form.errors %}
+    <span class="text-danger">{{ error }}</span><br>
+  {% endfor %}
+{% endif %}
 
 {% endblock body %}
