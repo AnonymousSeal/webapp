@@ -37,7 +37,7 @@ def add_comment(task_id):
 
     if "add" in request.form and form.upload.validate(form):
         filename = secure_filename(form.upload.upload.data.filename)
-        form.upload.upload.data.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+        form.upload.upload.data.save(os.path.join(current_app.root_path, 'static/material', filename))
         if session['file_chache'] != []:
             session['file_chache'] = session['file_chache'] + [filename]
         else:
@@ -77,6 +77,6 @@ def add_task():
 @login_required
 def uploaded_file(filename):
     try:
-        return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename=filename, as_attachment=False)
+        return send_from_directory(os.path.join(current_app.root_path, 'static/material'), filename=filename, as_attachment=False)
     except FileNotFoundError:
         abort(404)
