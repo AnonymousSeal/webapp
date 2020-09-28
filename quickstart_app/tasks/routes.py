@@ -65,9 +65,6 @@ def add_task():
     form = AddTaskForm()
     form.subject.choices = [(subject.id, subject.name) for subject in Subject.query.all()]
 
-    if request.method == 'POST':
-        print(form.subject.data)
-
     if form.validate_on_submit():
         db.session.add(Task(name=form.title.data,
                             description=form.description.data,

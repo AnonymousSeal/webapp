@@ -17,11 +17,6 @@
       <div class="form-group">
         {{ form.subject.label() }}<br>
         {{ form.subject }}
-        {% if form.subject.errors %}
-          {% for error in form.subject.errors %}
-            <span class="text-danger">{{ error }}</span><br>
-          {% endfor %}
-        {% endif %}
       </div>
       </fieldset>
     <div class="form-group">
@@ -29,11 +24,5 @@
     </div>
   </form>
 </section>
-
-{% if form.errors %}
-  {% for error in form.errors %}
-    <span class="text-danger">{{ error }}</span><br>
-  {% endfor %}
-{% endif %}
 
 {% endblock body %}
