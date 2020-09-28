@@ -1,17 +1,23 @@
 {% extends "base.html" %}
 {% block body %}
 
-<h1>Admins</h1><br>
-{% for admin in admins %}
-{{ admin.username }}
-{% endfor %}
+<section id="admins">
+  <h1>Admins</h1><br>
+  {% for admin in admins %}
+    {{ admin.username }}
+  {% endfor %}
+</section>
 
 <section id="add_subject">
-<h1>Add Subject</h1>
+  <h1>Add Subject</h1>
   <form action="" method="POST">
     <input type="text" name="name" placeholder="subject">
     <input type="submit" value="Add"><br>
-  </form>
+  </form><br>
+</section>
+
+<section id="editors">
+  <a href="{{ url_for('tasks.add_task')}} ">Add a Task</a>
 </section>
 
 {% endblock body %}
