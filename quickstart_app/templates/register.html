@@ -1,4 +1,4 @@
-{% from "_render_field.html" import render_field_1 %}
+{% from "_render_field.html" import render_string_field_like %}
 {% extends "base.html" %}
 {% block body %}
   <div class="content-section">
@@ -6,10 +6,10 @@
       {{ form.hidden_tag() }}
       <fieldset class="form-group">
         <legend class="border-bottom mb-4">Join Today</legend>
-        {{ render_field_1(form.username) }}
-        {{ render_field_1(form.email) }}
-        {{ render_field_1(form.password) }}
-        {{ render_field_1(form.confirm_password) }}
+        {{ render_string_field_like(form.username) }}
+        {{ render_string_field_like(form.email) }}
+        {{ render_string_field_like(form.password) }}
+        {{ render_string_field_like(form.confirm_password) }}
       </fieldset>
       <div class="form-group">
         {{ form.submit(class="btn btn-outline-info") }}
