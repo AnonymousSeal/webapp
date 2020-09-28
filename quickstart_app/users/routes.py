@@ -1,7 +1,7 @@
 from flask_login import login_user, current_user, logout_user, login_required
-from flask import render_template, redirect, url_for, flash, request, Blueprint, current_app
+from flask import render_template, redirect, url_for, flash, request, Blueprint
 from quickstart_app.users.forms import RegistrationForm, LoginForm, UpdateProfileForm
-from quickstart_app.users.utils import get_user_by_username
+from quickstart_app.users.utils import get_user_by_username, update_picture
 from quickstart_app.models import User
 from quickstart_app import db, bcrypt
 
@@ -51,6 +51,9 @@ def profile(username):
     if user == current_user:
         form = UpdateProfileForm()
         if form.validate_on_submit():
+            if form.picture.data:
+                picture_file = update_picture(form.picture.data)
+                current_user.image_file = picture_file
             current_user.username = form.username.data
             current_user.email = form.email.data
             db.session.commit()
