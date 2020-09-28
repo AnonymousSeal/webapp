@@ -1,38 +1,31 @@
-{% from "_render_field.html" import render_field_1 %}
+{% from "_render_field.html" import render_string_field_like, render_upload_field_like %}
 {% extends "base.html" %}
 {% block body %}
   <div class="content-section">
-    <fieldset class="form-group">
-      <form method="POST" enctype=multipart/form-data>
+    <form method="POST" enctype=multipart/form-data>
+      <fieldset class="form-group">
         {{ form.upload.hidden_tag() }}
         {{ form.upload.csrf_token() }}
-        <div class="form-group">
-          {% if form.upload.upload.errors %}
-            {{ form.upload.upload(class="form-control form-control-lg is-invalid") }}
-            <div class="invalid-feedback">
-              {% for error in form.upload.upload.errors %}
-                <span>{{ error }}</span>
-              {% endfor %}
-            </div>
-          {% else %}
-            {{ form.upload.upload(class="form-control form-control-lg") }}
-          {% endif %}
-        </div>
+        {{ render_upload_field_like(form.upload.upload) }}
         <div class="form-group">
           <input type="submit" name="add" value="Add" class="btn btn-outline-info">
         </div>
-      </form>
+      </fieldset>
+    </form>
+    <section id="cached files">
       {% for filename in session['file_chache'] %}
         <div class="border-round spaced mb mt">
           {{ filename }}
         </div>
       {% endfor %}
+    </section>
+    <fieldset class="form-group">
       <form method="POST" action="">
         {{ form.comment.hidden_tag() }}
         {{ form.comment.csrf_token() }}
 
-        {{ render_field_1(form.comment.title) }}
-        {{ render_field_1(form.comment.content) }}
+        {{ render_string_field_like(form.comment.title) }}
+        {{ render_string_field_like(form.comment.content) }}
 
         <div class="form-group">
           <input type="submit" name="comment" value="Comment" class="btn btn-outline-info">

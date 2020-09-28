@@ -13,3 +13,15 @@
     {% endif %}
   </div>
 {% endmacro %}
+
+{% macro render_upload_field_like(field) %}
+  <div class="form-group">
+    {{ field.label() }}
+    {{ field(class="form-control-file") }}
+    {% if field.errors %}
+      {% for error in field.errors %}
+        <span class="text-danger">{{ error }}</span><br>
+      {% endfor %}
+    {% endif %}
+  </div>
+{% endmacro %}
