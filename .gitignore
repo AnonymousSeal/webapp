@@ -8,7 +8,6 @@ __pycache__/
 *archived*
 material/
 
-database/*
 *.sqlite3
 
 profile_pictures/
