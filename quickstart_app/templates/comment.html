@@ -4,6 +4,7 @@
   <div class="content-section">
     <form method="POST" enctype=multipart/form-data>
       <fieldset class="form-group">
+        <legend class="border-bottom mb-4">{{ legend }}</legend>
         {{ form.upload.hidden_tag() }}
         {{ form.upload.csrf_token() }}
         {{ render_upload_field_like(form.upload.upload) }}

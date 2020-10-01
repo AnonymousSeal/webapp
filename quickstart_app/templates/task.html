@@ -1,36 +1,42 @@
 {% extends "base.html" %}
 {% block body %}
 
-<section id=title>
-  <h1>{{ task.name }}</h1>
-  <span class="text-muted">{{ subject.name }}</span><br><br>
-  {{ task.description }}<br>
-  <p>deadline: {{ task.deadline.strftime('%d.%m.%Y %H:%M') }}</p>
-</section>
+  <section id=title>
+    <h1>{{ task.name }}</h1>
+    <span class="text-muted">{{ subject.name }}</span><br><br>
+    {{ task.description }}<br>
+    <p>deadline: {{ task.deadline.strftime('%d.%m.%Y %H:%M') }}</p>
+  </section>
 
-<section id=comment>
-  <h2>Comments |
-    <a href="{{ url_for('tasks.add_comment', task_id=task.id) }}" class=button>+</a>
-  </h2>
-  {% for comment in task.comment|reverse %}
-    <div class="border-round bg-black mt mb spaced">
-      <div class="bb-grey mb">
-        <a href="{{ url_for('users.profile', username=comment.author.username) }}">
-          <img class="rounded-circle img-tiny" src="{{ url_for('static', filename='profile_pictures/' + comment.author.image_file) }}" alt="profile picture">
-          {{ comment.author.username }}
-        </a>
-        <span class="text-muted">
-          <small>{{ comment.time_added.strftime('%H:%M %d.%m.%Y') }}</small>
-        </span>
+  <section id=comment>
+    <h2>Comments |
+      <a href="{{ url_for('tasks.add_comment', task_id=task.id) }}" class=button>+</a>
+    </h2>
+    {% for comment in task.comment|reverse %}
+      <div class="border-round bg-black mt mb spaced">
+        <div class="bb-grey mb">
+          <a href="{{ url_for('users.profile', username=comment.author.username) }}">
+            <img class="rounded-circle img-tiny" src="{{ url_for('static', filename='profile_pictures/' + comment.author.image_file) }}" alt="profile picture">
+            {{ comment.author.username }}
+          </a>
+          <span class="text-muted">
+            <small>{{ comment.time_added.strftime('%H:%M %d.%m.%Y') }}</small>
+          </span>
+          {% if comment.author == current_user %}
+            <span class="float-right">
+              <a class="btn btn-secondary btn-sm m-1" href="{{ url_for('tasks.update_comment', comment_id=comment.id) }}">Update</a>
+              <a class="btn btn-danger btn-sm m-1" href="{{ url_for('tasks.delete_comment', comment_id=comment.id) }}">Delete</a>
+            </span>
+          {% endif %}
+        </div>
+        <h3>{{ comment.title }}</h3>
+        <p>{{ comment.comment }}</p>
+        {% for material in comment.material %}
+          <span class="ml">
+            <a href="{{ url_for('tasks.uploaded_file', filename=material.filename) }}">{{ material.filename }}</a><br>
+          </span>
+        {% endfor %}
       </div>
-      <h3>{{ comment.title }}</h3>
-      <p>{{ comment.comment }}</p>
-      {% for material in comment.material %}
-        <span class="ml">
-          <a href="{{ url_for('tasks.uploaded_file', filename=material.filename) }}">{{ material.filename }}</a><br>
-        </span>
-      {% endfor %}
-    </div>
-  {% endfor %}
-</section>
+    {% endfor %}
+  </section>
 {% endblock body %}
