@@ -90,11 +90,16 @@ def delete_comment(comment_id):
         abort(403)
     for material in comment.material:
         db.session.delete(material)
+        try:
+            os.remove(os.path.join(current_app.root_path, 'static/material', material.filename))
+        except:
+            pass
     db.session.commit()
     db.session.delete(comment)
     db.session.commit()
-    flash('Your post has been deleted!', 'success')
+    flash('Your comment has been deleted!', 'success')
     return redirect(url_for('tasks.task', task_id=comment.task_id))
+
 
 @tasks.route('/add_task', methods=['GET', 'POST'])
 @login_required
