@@ -1,6 +1,7 @@
 from quickstart_app import db, login_manager
 from flask_login import UserMixin
 from datetime import datetime
+from pytz import timezone
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -9,11 +10,13 @@ def load_user(user_id):
     except:
         return None
 
+tz = timezone('Europe/Vienna')
+
 
 class User(db.Model, UserMixin):
 
     id = db.Column(db.Integer, primary_key=True)
-    time_added = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    time_added = db.Column(db.DateTime, nullable=False, default=datetime.now(tz))
 
     username = db.Column(db.String(20), nullable=False, unique=True)
     email = db.Column(db.String(120), nullable=False, unique=True)
@@ -30,8 +33,8 @@ class User(db.Model, UserMixin):
 class Task(db.Model):
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    time_added = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    time_updated = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    time_added = db.Column(db.DateTime, nullable=False, default=datetime.now(tz))
+    time_updated = db.Column(db.DateTime, default=datetime.now(tz), onupdate=datetime.now(tz))
 
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(250), nullable=False)
@@ -56,10 +59,11 @@ class Subject(db.Model):
 class Material(db.Model):
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    time_added = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    time_updated = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    time_added = db.Column(db.DateTime, nullable=False, default=datetime.now(tz))
+    time_updated = db.Column(db.DateTime, default=datetime.now(tz), onupdate=datetime.now(tz))
 
     filename = db.Column(db.String(255), nullable=False)
+    orignial_name = db.Column(db.String(255), nullable=False)
 
     upload_id = db.Column(db.Integer, db.ForeignKey('comment.id'), nullable=False)
 
@@ -69,10 +73,9 @@ class Material(db.Model):
 class Comment(db.Model):
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    time_added = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    time_updated = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    time_added = db.Column(db.DateTime, nullable=False, default=datetime.now(tz))
+    time_updated = db.Column(db.DateTime, default=datetime.now(tz), onupdate=datetime.now(tz))
 
-    title = db.Column(db.String(100), nullable=False)
     comment = db.Column(db.Text())
 
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)

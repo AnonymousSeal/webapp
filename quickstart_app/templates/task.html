@@ -20,7 +20,7 @@
             {{ comment.author.username }}
           </a>
           <span class="text-muted">
-            <small>{{ comment.time_added.strftime('%H:%M %d.%m.%Y') }}</small>
+            <small>{{ comment.time_updated.strftime('%H:%M %d.%m.%Y') }}</small>
           </span>
           {% if comment.author == current_user %}
             <span class="float-right">
