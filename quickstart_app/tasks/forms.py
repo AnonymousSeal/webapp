@@ -8,7 +8,6 @@ from quickstart_app.models import Subject
 from datetime import datetime
 
 class CommentForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired()])
     content = TextAreaField('Content')
 
 class UploadForm(FlaskForm):

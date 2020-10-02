@@ -84,4 +84,4 @@ class Comment(db.Model):
     material = db.relationship('Material', backref='upload', lazy=True, foreign_keys="Material.upload_id")
 
     def __repr__(self):
-        return f"Comment('{self.time_added}', '{self.title}')"
+        return f"Comment('{self.time_added}', '{self.author}')"

@@ -25,7 +25,6 @@
         {{ form.comment.hidden_tag() }}
         {{ form.comment.csrf_token() }}
 
-        {{ render_string_field_like(form.comment.title) }}
         {{ render_string_field_like(form.comment.content) }}
 
         <div class="form-group">
