@@ -3,14 +3,14 @@ import secrets
 import os
 
 
-def check_comment_cu_session_data(id, initial_file_cache_value=[]):
+def check_comment_cu_session_data(id, file_cache=[]):
     if not 'file_chache' in session:
-        session['file_chache'] = initial_file_cache_value
+        session['file_chache'] = file_cache
     if not 'staged_files_location' in session:
         session['staged_files_location'] = id
     if session['staged_files_location'] != id:
         session['staged_files_location'] = id
-        session['file_chache'] = initial_file_cache_value
+        session['file_chache'] = file_cache
 
 def add_file(file, filename):
     orignial_name = file.filename

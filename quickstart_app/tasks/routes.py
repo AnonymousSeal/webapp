@@ -57,7 +57,7 @@ def update_comment(comment_id):
     if comment.author != current_user:
         abort(403)
     form = CommentUploadForm()
-    check_comment_cu_session_data(str(comment.task_id) + 'u' + str(comment.id), initial_file_cache_value=[[material.filename, material.orignial_name] for material in comment.material])
+    check_comment_cu_session_data(str(comment.task_id) + 'u' + str(comment.id), file_cache=[[material.filename, material.orignial_name] for material in comment.material])
 
     if "add" in request.form and form.upload.validate(form):
         add_file(form.upload.upload.data, secure_filename(comment.task.name))
