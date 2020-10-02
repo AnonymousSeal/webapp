@@ -34,6 +34,7 @@ def add_comment(task_id):
 
     if "add" in request.form and form.upload.validate(form):
         add_file(form.upload.upload.data, secure_filename(task.name))
+        return redirect(url_for('tasks.add_comment', task_id=task_id))
 
     if "comment" in request.form and form.comment.validate(form):
         # add comment
@@ -61,6 +62,7 @@ def update_comment(comment_id):
 
     if "add" in request.form and form.upload.validate(form):
         add_file(form.upload.upload.data, secure_filename(comment.task.name))
+        return redirect(url_for('tasks.update_comment', comment_id=comment_id))
 
     if "comment" in request.form and form.comment.validate(form):
         comment.comment = form.comment.content.data
