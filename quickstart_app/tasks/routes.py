@@ -2,6 +2,7 @@ from flask_login import current_user, login_required
 from flask import render_template, request, redirect, url_for, send_from_directory, abort, current_app, Blueprint, session, flash
 from quickstart_app.models import Task, Subject, Material, Comment
 from quickstart_app.tasks.forms import CommentUploadForm, AddTaskForm
+from quickstart_app.tasks.utils import check_comment_cu_session_data, add_file
 from quickstart_app import db
 from werkzeug.utils import secure_filename
 from datetime import datetime
@@ -27,28 +28,21 @@ def task(task_id):
 @login_required
 def add_comment(task_id):
     form = CommentUploadForm()
-    if not 'file_chache' in session:
-        session['file_chache'] = []
-    if not 'staged_files_location' in session:
-        session['staged_files_location'] = task_id
-    if session['staged_files_location'] != task_id:
-        session['file_chache'] = []
-        session['staged_files_location'] = task_id
+    check_comment_cu_session_data(task_id)
+
+    task = Task.query.get_or_404(task_id)
 
     if "add" in request.form and form.upload.validate(form):
-        filename = secure_filename(form.upload.upload.data.filename)
-        form.upload.upload.data.save(os.path.join(current_app.root_path, 'static/material', filename))
-        if session['file_chache'] != []:
-            session['file_chache'] = session['file_chache'] + [filename]
-        else:
-            session['file_chache'] = [filename]
+        add_file(form.upload.upload.data, secure_filename(task.name))
 
     if "comment" in request.form and form.comment.validate(form):
-        comment = Comment(title=form.comment.title.data, comment=form.comment.content.data, author_id=current_user.id, task_id=task_id)
+        # add comment
+        comment = Comment(comment=form.comment.content.data, author_id=current_user.id, task_id=task_id)
         db.session.add(comment)
         db.session.commit()
-        for filename in session['file_chache']:
-            db.session.add(Material(filename=filename, upload_id=comment.id))
+        # add associated material
+        for filename, orignial_name in session['file_chache']:
+            db.session.add(Material(filename=filename, orignial_name=orignial_name, upload_id=comment.id))
         db.session.commit()
         session['file_chache'] = []
 
@@ -63,38 +57,26 @@ def update_comment(comment_id):
     if comment.author != current_user:
         abort(403)
     form = CommentUploadForm()
-
-    if not 'file_chache' in session:
-        session['file_chache'] = [material.filename for material in comment.material]
-    if not 'staged_files_location' in session:
-        session['staged_files_location'] = str(comment.task_id) + 'u' + str(comment.id)
-    if session['staged_files_location'] != str(comment.task_id) + 'u' + str(comment.id):
-        session['file_chache'] = [material.filename for material in comment.material]
-        session['staged_files_location'] = str(comment.task_id) + 'u' + str(comment.id)
+    check_comment_cu_session_data(str(comment.task_id) + 'u' + str(comment.id), initial_file_cache_value=[[material.filename, material.orignial_name] for material in comment.material])
 
     if "add" in request.form and form.upload.validate(form):
-        filename = secure_filename(form.upload.upload.data.filename)
-        form.upload.upload.data.save(os.path.join(current_app.root_path, 'static/material', filename))
-        if session['file_chache'] != []:
-            session['file_chache'] = session['file_chache'] + [filename]
-        else:
-            session['file_chache'] = [filename]
+        add_file(form.upload.upload.data, secure_filename(comment.task.name))
 
     if "comment" in request.form and form.comment.validate(form):
-        comment.title = form.comment.title.data
         comment.comment = form.comment.content.data
+        #rm removed material
         for material in comment.material:
-            if material.filename not in session['file_chache']:
+            if [material.filename, material.orignial_name] not in session['file_chache']:
                  db.session.delete(material)
+        #add added material
         material_filenames = [material.filename for material in comment.material]
-        for filename in session['file_chache']:
+        for filename, orignial_name in session['file_chache']:
             if filename not in material_filenames:
-                 db.session.add(Material(filename=filename, upload_id=comment.id))
+                 db.session.add(Material(filename=filename, orignial_name=orignial_name, upload_id=comment.id))
         db.session.commit()
         return redirect(url_for('tasks.task', task_id=comment.task_id))
 
     if request.method == 'GET':
-        form.comment.title.data = comment.title
         form.comment.content.data = comment.comment
 
     return render_template('comment.html', title='Update Comment',

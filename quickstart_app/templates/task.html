@@ -29,11 +29,10 @@
             </span>
           {% endif %}
         </div>
-        <h3>{{ comment.title }}</h3>
         <p>{{ comment.comment }}</p>
         {% for material in comment.material %}
           <span class="ml">
-            <a href="{{ url_for('tasks.uploaded_file', filename=material.filename) }}">{{ material.filename }}</a><br>
+            <a href="{{ url_for('tasks.uploaded_file', filename=material.filename) }}">{{ material.orignial_name }}</a><br>
           </span>
         {% endfor %}
       </div>
