@@ -10,9 +10,9 @@ main = Blueprint('main', __name__)
 @main.route('/config', methods=['GET', 'POST'])
 @login_required
 def config():
-    user = User.query.get(current_user.id)
+    user = User.query.get_or_404(current_user.id)
     if user.status == 'user':
-        return redirect(url_for('users.profile', username=current_user.username))
+        abort(403)
 
     if request.method == 'POST':
         add_subject(request.form['name'])
