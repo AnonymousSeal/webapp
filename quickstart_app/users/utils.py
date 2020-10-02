@@ -17,8 +17,9 @@ def update_picture(form_picture):
     img = Image.open(form_picture)
     img.thumbnail(output_size)
     img.save(picture_path)
-    try:
-        os.remove(os.path.join(current_app.root_path, 'static/profile_pictures', current_user.image_file))
-    except:
-        pass
+    if current_user.image_file != 'default.jpg':
+        try:
+            os.remove(os.path.join(current_app.root_path, 'static/profile_pictures', current_user.image_file))
+        except:
+            pass
     return picture_name
