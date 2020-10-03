@@ -49,7 +49,7 @@ def add_comment(task_id):
 
         return redirect(url_for('tasks.task', task_id=task_id))
     return render_template('comment.html', title='Add Comment',
-                            form=form, legend='Add Comment')
+                            form=form, action='c', id=task.id)
 
 @tasks.route('/comment/<int:comment_id>/update', methods=['GET', 'POST'])
 @login_required
@@ -82,7 +82,7 @@ def update_comment(comment_id):
         form.comment.content.data = comment.comment
 
     return render_template('comment.html', title='Update Comment',
-                            form=form, legend='Update Comment')
+                            form=form, action='u', id=comment.id)
 
 @tasks.route('/comment/<int:comment_id>/delete', methods=['GET', 'POST'])
 @login_required
@@ -101,6 +101,25 @@ def delete_comment(comment_id):
     db.session.commit()
     flash('Your comment has been deleted!', 'success')
     return redirect(url_for('tasks.task', task_id=comment.task_id))
+
+
+@tasks.route('/remove_staged', methods=['GET', 'POST'])
+@login_required
+def remove_staged():
+    index = int(request.args.get('index')) - 1
+    print('inside')
+    if 'file_chache' in session:
+        print(session['file_chache'])
+        try:
+            session['file_chache'] = session['file_chache'][:index] + session['file_chache'][index+1:]
+        except:
+            print('except')
+            pass
+    next_page = request.args.get('origin')
+    if next_page:
+        return redirect(next_page)
+    return redirect(url_for('tasks.schedule'))
+
 
 
 @tasks.route('/add_task', methods=['GET', 'POST'])
