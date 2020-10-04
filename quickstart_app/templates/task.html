@@ -2,19 +2,19 @@
 {% block body %}
 
   <section id=title>
-    <h1>{{ task.name }}</h1>
+    <h1 class="inline">{{ task.name }}</h1>
     <span class="text-muted">{{ subject.name }}</span><br><br>
     {{ task.description }}<br>
     <p>deadline: {{ task.deadline.strftime('%d.%m.%Y %H:%M') }}</p>
   </section>
 
   <section id=comment>
-    <h2>Comments |
+    <h2 class="inline">Comments |
       <a href="{{ url_for('tasks.add_comment', task_id=task.id) }}" class=button>+</a>
     </h2>
     {% for comment in task.comment|reverse %}
-      <div class="border-round bg-black mt mb spaced">
-        <div class="bb-grey mb">
+      <div class="border-round bg-black mt mb-4 spaced">
+        <div class="bb-grey mb-4">
           <a href="{{ url_for('users.profile', username=comment.author.username) }}">
             <img class="rounded-circle img-tiny" src="{{ url_for('static', filename='profile_pictures/' + comment.author.image_file) }}" alt="profile picture">
             {{ comment.author.username }}

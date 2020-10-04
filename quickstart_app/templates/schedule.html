@@ -3,9 +3,9 @@
 
 <section id=add_new_task>
   {% if current_user.status == 'user' %}
-    <h1>Tasks</h1>
+    <h1 class="inline">Tasks</h1>
   {% else %}
-  <h1>Tasks |
+  <h1 class="inline">Tasks |
     <a href="{{ url_for('tasks.add_task') }}" class="button">+</a>
   </h1>
   {% endif %}

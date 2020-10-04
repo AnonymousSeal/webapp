@@ -2,14 +2,14 @@
 {% block body %}
 
 <section id="admins">
-  <h1>Admins</h1><br>
+  <h1 class="inline">Admins</h1><br>
   {% for admin in admins %}
     {{ admin.username }}
   {% endfor %}
 </section>
 
 <section id="add_subject">
-  <h1>Add Subject</h1>
+  <h1 class="inline">Add Subject</h1>
   <form action="" method="POST">
     <input type="text" name="name" placeholder="subject">
     <input type="submit" value="Add"><br>

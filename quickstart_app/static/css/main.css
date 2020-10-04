@@ -75,7 +75,7 @@ hr{
   overflow: hidden;
 }
 
-h1, h2{
+.inline{
   display: inline;
 }
 
@@ -83,12 +83,12 @@ h1, h2{
   margin-top: 5px;
 }
 
-.mb{
-  margin-bottom: 5px;
-}
-
 .spaced{
   padding: 10px;
+}
+
+.pb-25{
+  padding-bottom: 25px;
 }
 
 .ml{
@@ -136,4 +136,9 @@ h1, h2{
 
 .bb-grey{
   border-bottom: 1px solid #17191F;
+}
+
+.debug{
+  background-color: red;
+  color: green;
 }
