@@ -2,44 +2,44 @@
 {% extends "base.html" %}
 {% block body %}
   <div class="content-section">
-    <form method="POST" enctype=multipart/form-data>
-      <fieldset class="form-group">
-        {% if action == 'u' %}
-          <legend class="border-bottom mb-4">Update Comment</legend>
-        {% elif action == 'c' %}
-          <legend class="border-bottom mb-4">Add Comment</legend>
-        {% endif %}
+    <fieldset class="form-group">
+      {% if action == 'u' %}
+        <legend class="border-bottom mb-4">Update Comment</legend>
+      {% elif action == 'c' %}
+        <legend class="border-bottom mb-4">Add Comment</legend>
+      {% endif %}
+      <form method="POST" enctype=multipart/form-data>
         {{ form.upload.hidden_tag() }}
         {{ form.upload.csrf_token() }}
-        {{ render_upload_field_like(form.upload.upload) }}
-        <div class="form-group">
-          <input type="submit" name="add" value="Add" class="btn btn-outline-info">
+        <div class="border-round spaced pb-25">
+          {{ render_upload_field_like(form.upload.upload, class="inline") }}
+          <input type="submit" name="add" value="Add" class="btn btn-outline-info inline float-right">
         </div>
-      </fieldset>
-    </form>
-    <section id="cached files">
-      {% for filename, original_name in session['file_chache'] %}
-        <div class="border-round spaced mb mt">
-          {{ original_name }}
-          <span class="float-right">
-            {% if action == 'u' %}
-              <a href="{{ url_for('tasks.remove_staged', origin=url_for('tasks.update_comment', comment_id=id), index=loop.index) }}">x</a>
-            {% elif action == 'c' %}
-              <a href="{{ url_for('tasks.remove_staged', origin=url_for('tasks.add_comment', task_id=id), index=loop.index) }}">x</a>
-            {% endif %}
-          </span>
-        </div>
-      {% endfor %}
-    </section>
-    <fieldset class="form-group">
+      </form>
+      <section id="cached files">
+        {% for filename, original_name in session['file_chache'] %}
+          <div class="border-round spaced mt">
+            {{ original_name }}
+            <span class="float-right">
+              {% if action == 'u' %}
+                <a href="{{ url_for('tasks.remove_staged', origin=url_for('tasks.update_comment', comment_id=id), index=loop.index) }}">x</a>
+              {% elif action == 'c' %}
+                <a href="{{ url_for('tasks.remove_staged', origin=url_for('tasks.add_comment', task_id=id), index=loop.index) }}">x</a>
+              {% endif %}
+            </span>
+          </div>
+        {% endfor %}
+      </section>
+      <br>
       <form method="POST" action="">
         {{ form.comment.hidden_tag() }}
         {{ form.comment.csrf_token() }}
-
-        {{ render_string_field_like(form.comment.content) }}
-
+        <div class="border-round spaced">
+          {{ render_string_field_like(form.comment.content) }}
+        </div>
+        <br>
         <div class="form-group">
-          <input type="submit" name="comment" value="Comment" class="btn btn-outline-info">
+          <input type="submit" name="comment" value="Comment" class="btn btn-outline-info float-right">
         </div>
       </form>
     </fieldset>
