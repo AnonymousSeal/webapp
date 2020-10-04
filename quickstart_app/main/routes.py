@@ -1,5 +1,5 @@
 from flask_login import current_user, login_required
-from flask import render_template, redirect, url_for, request, Blueprint
+from flask import render_template, redirect, url_for, request, Blueprint, abort
 from quickstart_app.models import User, Task, Subject
 from quickstart_app.main.utils import add_subject
 from quickstart_app import db
