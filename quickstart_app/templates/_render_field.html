@@ -2,26 +2,24 @@
   <div class="form-group">
     {{ field.label(class="form-control-label") }}
     {% if field.errors %}
-      {{ field(class="form-control form-control-lg is-invalid") }}
+      {{ field(class="form-control form-control-lg is-invalid", **kwargs)|safe }}
       <div class="invalid-feedback">
         {% for error in field.errors %}
           <span>{{ error }}</span>
         {% endfor %}
       </div>
     {% else %}
-      {{ field(class="form-control form-control-lg") }}
+      {{ field(class="form-control form-control-lg", **kwargs)|safe }}
     {% endif %}
   </div>
 {% endmacro %}
 
 {% macro render_upload_field_like(field) %}
-  <div class="form-group">
-    {{ field.label() }}
-    {{ field(class="form-control-file") }}
-    {% if field.errors %}
-      {% for error in field.errors %}
-        <span class="text-danger">{{ error }}</span><br>
-      {% endfor %}
-    {% endif %}
-  </div>
+  {{ field.label() }}<br>
+  {{ field(class="form-control-file", **kwargs)|safe }}
+  {% if field.errors %}
+    {% for error in field.errors %}
+      <span class="text-danger">{{ error }}</span><br>
+    {% endfor %}
+  {% endif %}
 {% endmacro %}
