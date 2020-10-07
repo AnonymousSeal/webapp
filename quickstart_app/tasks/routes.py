@@ -1,8 +1,8 @@
 from flask_login import current_user, login_required
-from flask import render_template, request, redirect, url_for, send_from_directory, abort, current_app, Blueprint, session, flash
+from flask import render_template, request, redirect, url_for, send_from_directory, abort, current_app, Blueprint, flash
 from quickstart_app.models import Task, Subject, Material, Comment
-from quickstart_app.tasks.forms import CommentUploadForm, AddTaskForm
-from quickstart_app.tasks.utils import check_comment_cu_session_data, add_file
+from quickstart_app.tasks.forms import CommentForm, UploadForm, AddTaskForm
+from quickstart_app.tasks.utils import add_file
 from quickstart_app import db
 from werkzeug.utils import secure_filename
 from datetime import datetime
@@ -24,65 +24,57 @@ def task(task_id):
     subject = Subject.query.get(task.subject_id)
     return render_template('task.html', title=task.name, task=task, subject=subject)
 
-@tasks.route('/comment/<int:task_id>', methods=['GET', 'POST'])
+@tasks.route('/comment/<int:comment_id>', methods=['GET', 'POST'])
 @login_required
-def add_comment(task_id):
-    form = CommentUploadForm()
-    check_comment_cu_session_data(task_id)
+def comment(comment_id):
+    form = CommentForm()
+    comment = Comment.query.get(comment_id)
+    task = Task.query.get(comment.task_id)
+
+    if form.validate_on_submit():
+        comment.comment = form.content.data
+        db.session.add(comment)
+        db.session.commit()
+        return redirect(url_for('tasks.task', task_id=task.id))
+
+    if request.method == 'GET':
+        form.content.data = comment.comment
+
+    return render_template('comment.html', title=task.name, comment=comment, form=form)
+
+@tasks.route('/task/<int:task_id>/comment', methods=['GET', 'POST'])
+@login_required
+def add_comment_content(task_id):
+    form = CommentForm()
 
     task = Task.query.get_or_404(task_id)
 
-    if "add" in request.form and form.upload.validate(form):
-        add_file(form.upload.upload.data, secure_filename(task.name))
-        return redirect(url_for('tasks.add_comment', task_id=task_id))
-
-    if "comment" in request.form and form.comment.validate(form):
+    if form.validate_on_submit():
         # add comment
-        comment = Comment(comment=form.comment.content.data, author_id=current_user.id, task_id=task_id)
+        comment = Comment(comment=form.content.data, author_id=current_user.id, task_id=task_id)
         db.session.add(comment)
         db.session.commit()
-        # add associated material
-        for filename, orignial_name in session['file_chache']:
-            db.session.add(Material(filename=filename, orignial_name=orignial_name, upload_id=comment.id))
-        db.session.commit()
-        session['file_chache'] = []
 
         return redirect(url_for('tasks.task', task_id=task_id))
-    return render_template('comment.html', title='Add Comment',
-                            form=form, action='c', id=task.id)
+    return render_template('comment_content.html', title='Add Comment',
+                            form=form)
 
-@tasks.route('/comment/<int:comment_id>/update', methods=['GET', 'POST'])
+@tasks.route('/comment/<int:comment_id>/upload', methods=['GET', 'POST'])
 @login_required
-def update_comment(comment_id):
+def add_comment_upload(comment_id):
+    form = UploadForm()
     comment = Comment.query.get_or_404(comment_id)
     if comment.author != current_user:
         abort(403)
-    form = CommentUploadForm()
-    check_comment_cu_session_data(str(comment.task_id) + 'u' + str(comment.id), file_cache=[[material.filename, material.orignial_name] for material in comment.material])
 
-    if "add" in request.form and form.upload.validate(form):
-        add_file(form.upload.upload.data, secure_filename(comment.task.name))
-        return redirect(url_for('tasks.update_comment', comment_id=comment_id))
-
-    if "comment" in request.form and form.comment.validate(form):
-        comment.comment = form.comment.content.data
-        #rm removed material
-        for material in comment.material:
-            if [material.filename, material.orignial_name] not in session['file_chache']:
-                 db.session.delete(material)
-        #add added material
-        material_filenames = [material.filename for material in comment.material]
-        for filename, orignial_name in session['file_chache']:
-            if filename not in material_filenames:
-                 db.session.add(Material(filename=filename, orignial_name=orignial_name, upload_id=comment.id))
+    if form.validate_on_submit():
+        filename = add_file(form.upload.data, secure_filename(comment.task.name))
+        db.session.add(Material(filename=filename, orignial_name=form.upload.data.filename, upload_id=comment.id))
         db.session.commit()
-        return redirect(url_for('tasks.task', task_id=comment.task_id))
+        return redirect(url_for('tasks.add_comment_upload', comment_id=comment_id))
 
-    if request.method == 'GET':
-        form.comment.content.data = comment.comment
-
-    return render_template('comment.html', title='Update Comment',
-                            form=form, action='u', id=comment.id)
+    return render_template('comment_upload.html', title='Add Upload',
+                            form=form, comment=comment)
 
 @tasks.route('/comment/<int:comment_id>/delete', methods=['GET', 'POST'])
 @login_required
@@ -92,10 +84,6 @@ def delete_comment(comment_id):
         abort(403)
     for material in comment.material:
         db.session.delete(material)
-        try:
-            os.remove(os.path.join(current_app.root_path, 'static/material', material.filename))
-        except:
-            pass
     db.session.commit()
     db.session.delete(comment)
     db.session.commit()
@@ -103,18 +91,11 @@ def delete_comment(comment_id):
     return redirect(url_for('tasks.task', task_id=comment.task_id))
 
 
-@tasks.route('/remove_staged', methods=['GET', 'POST'])
+@tasks.route('/delete_upload/<int:upload_id>', methods=['GET', 'POST'])
 @login_required
-def remove_staged():
-    index = int(request.args.get('index')) - 1
-    print('inside')
-    if 'file_chache' in session:
-        print(session['file_chache'])
-        try:
-            session['file_chache'] = session['file_chache'][:index] + session['file_chache'][index+1:]
-        except:
-            print('except')
-            pass
+def delete_upload(upload_id):
+    db.session.delete(Material.query.get_or_404(upload_id))
+    db.session.commit()
     next_page = request.args.get('origin')
     if next_page:
         return redirect(next_page)

@@ -1,16 +1,6 @@
-from flask import session, current_app
+from flask import current_app
 import secrets
 import os
-
-
-def check_comment_cu_session_data(id, file_cache=[]):
-    if not 'file_chache' in session:
-        session['file_chache'] = file_cache
-    if not 'staged_files_location' in session:
-        session['staged_files_location'] = id
-    if session['staged_files_location'] != id:
-        session['staged_files_location'] = id
-        session['file_chache'] = file_cache
 
 def add_file(file, filename):
     orignial_name = file.filename
@@ -18,4 +8,4 @@ def add_file(file, filename):
     _, f_ext = os.path.splitext(orignial_name)
     filename = filename + '_' + random_hex + f_ext
     file.save(os.path.join(current_app.root_path, 'static/material', filename))
-    session['file_chache'] = session['file_chache'] + [[filename, orignial_name]]
+    return filename

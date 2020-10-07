@@ -1,47 +1,40 @@
-{% from "_render_field.html" import render_string_field_like, render_upload_field_like %}
+{% from "_render_field.html" import render_string_field_like %}
 {% extends "base.html" %}
 {% block body %}
-  <div class="content-section">
-    <fieldset class="form-group">
-      {% if action == 'u' %}
-        <legend class="border-bottom mb-4">Update Comment</legend>
-      {% elif action == 'c' %}
-        <legend class="border-bottom mb-4">Add Comment</legend>
+  <div class="border-round bg-black spaced">
+    <div class="bb-grey mb-4 pb-25">
+      <a href="{{ url_for('users.profile', username=comment.author.username) }}">
+        <img class="rounded-circle img-tiny" src="{{ url_for('static', filename='profile_pictures/' + comment.author.image_file) }}" alt="profile picture">
+        {{ comment.author.username }}
+      </a>
+      <span class="text-muted">
+        <small>{{ comment.time_updated.strftime('%H:%M %d.%m.%Y') }}</small>
+      </span>
+      {% if comment.author == current_user %}
+        <span class="float-right">
+          <a class="btn btn-secondary btn-sm m-1" href="{{ url_for('tasks.add_comment_upload', comment_id=comment.id) }}">Manage Uploads</a>
+          <div><a class="btn btn-danger btn-sm m-1 float-right" href="{{ url_for('tasks.delete_comment', comment_id=comment.id) }}">Delete</a></div>
+        </span>
       {% endif %}
-      <form method="POST" enctype=multipart/form-data>
-        {{ form.upload.hidden_tag() }}
-        {{ form.upload.csrf_token() }}
-        <div class="border-round spaced pb-25">
-          {{ render_upload_field_like(form.upload.upload, class="inline") }}
-          <input type="submit" name="add" value="Add" class="btn btn-outline-info inline float-right">
-        </div>
-      </form>
-      <section id="cached files">
-        {% for filename, original_name in session['file_chache'] %}
-          <div class="border-round spaced mt">
-            {{ original_name }}
-            <span class="float-right">
-              {% if action == 'u' %}
-                <a href="{{ url_for('tasks.remove_staged', origin=url_for('tasks.update_comment', comment_id=id), index=loop.index) }}">x</a>
-              {% elif action == 'c' %}
-                <a href="{{ url_for('tasks.remove_staged', origin=url_for('tasks.add_comment', task_id=id), index=loop.index) }}">x</a>
-              {% endif %}
-            </span>
-          </div>
-        {% endfor %}
-      </section>
-      <br>
+    </div>
+    {% if comment.author == current_user %}
       <form method="POST" action="">
-        {{ form.comment.hidden_tag() }}
-        {{ form.comment.csrf_token() }}
-        <div class="border-round spaced">
-          {{ render_string_field_like(form.comment.content) }}
-        </div>
+        {{ form.hidden_tag() }}
+        {{ form.csrf_token() }}
+        {{ render_string_field_like(form.content) }}
         <br>
         <div class="form-group">
-          <input type="submit" name="comment" value="Comment" class="btn btn-outline-info float-right">
+          {{ form.submit(class="btn btn-outline-info inline") }}
         </div>
       </form>
-    </fieldset>
+    {% else %}
+      <p>{{comment.comment}}</p>
+    {% endif %}
+    <br>
+    {% for material in comment.material %}
+      <span class="ml">
+        <a href="{{ url_for('tasks.uploaded_file', filename=material.filename) }}">{{ material.orignial_name }}</a><br>
+      </span>
+    {% endfor %}
   </div>
 {% endblock body %}

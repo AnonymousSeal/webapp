@@ -10,10 +10,10 @@
 
   <section id=comment>
     <h2 class="inline">Comments |
-      <a href="{{ url_for('tasks.add_comment', task_id=task.id) }}" class=button>+</a>
+      <a href="{{ url_for('tasks.add_comment_content', task_id=task.id) }}" class=button>+</a>
     </h2>
     {% for comment in task.comment|reverse %}
-      <div class="border-round bg-black mt mb-4 spaced">
+      <div class="border-round bg-black mt-2 spaced">
         <div class="bb-grey mb-4">
           <a href="{{ url_for('users.profile', username=comment.author.username) }}">
             <img class="rounded-circle img-tiny" src="{{ url_for('static', filename='profile_pictures/' + comment.author.image_file) }}" alt="profile picture">
@@ -22,12 +22,7 @@
           <span class="text-muted">
             <small>{{ comment.time_updated.strftime('%H:%M %d.%m.%Y') }}</small>
           </span>
-          {% if comment.author == current_user %}
-            <span class="float-right">
-              <a class="btn btn-secondary btn-sm m-1" href="{{ url_for('tasks.update_comment', comment_id=comment.id) }}">Update</a>
-              <a class="btn btn-danger btn-sm m-1" href="{{ url_for('tasks.delete_comment', comment_id=comment.id) }}">Delete</a>
-            </span>
-          {% endif %}
+          <a href="{{ url_for('tasks.comment', comment_id=comment.id) }}" class="btn btn-secondary btn-sm m-1 float-right">View</a>
         </div>
         <p>{{ comment.comment }}</p>
         {% for material in comment.material %}

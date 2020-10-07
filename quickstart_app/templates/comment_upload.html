@@ -1,0 +1,29 @@
+{% from "_render_field.html" import render_upload_field_like %}
+{% extends "base.html" %}
+{% block body %}
+  <div class="content-section">
+    <fieldset class="form-group">
+      <legend class="border-bottom mb-4">Add Uploads</legend>
+      <form method="POST" enctype=multipart/form-data>
+        {{ form.hidden_tag() }}
+        {{ form.csrf_token() }}
+        {{ render_upload_field_like(form.upload, class="inline") }}
+        {{ form.submit(class="btn btn-outline-info inline float-right") }}
+      </form>
+      <br><br>
+
+      <section id="cached files">
+        {% for upload in comment.material %}
+          <div class="border-round spaced mt">
+            {{ upload.orignial_name }}
+            <span class="float-right">
+              <a href="{{ url_for('tasks.delete_upload', upload_id=upload.id, origin=url_for('tasks.add_comment_upload', comment_id=comment.id)) }}">x</a>
+            </span>
+            <br>
+          </div>
+        {% endfor %}
+      </section>
+      <a class="btn btn-secondary mt-4 m-1" href="{{ url_for('tasks.comment', comment_id=comment.id) }}">< Back</a>
+    </fieldset>
+  </div>
+{% endblock body %}
