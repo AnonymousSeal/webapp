@@ -40,7 +40,7 @@ def comment(comment_id):
     if request.method == 'GET':
         form.content.data = comment.comment
 
-    return render_template('comment.html', title=task.name, comment=comment, form=form)
+    return render_template('comment.html', title=task.name, comment=comment, task=task, form=form)
 
 @tasks.route('/task/<int:task_id>/comment', methods=['GET', 'POST'])
 @login_required
@@ -57,7 +57,7 @@ def add_comment_content(task_id):
 
         return redirect(url_for('tasks.task', task_id=task_id))
     return render_template('comment_content.html', title='Add Comment',
-                            form=form)
+                            form=form, task=task)
 
 @tasks.route('/comment/<int:comment_id>/upload', methods=['GET', 'POST'])
 @login_required

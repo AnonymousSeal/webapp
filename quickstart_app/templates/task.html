@@ -1,4 +1,7 @@
 {% extends "base.html" %}
+{% block navbar %}
+  <a href="{{ url_for('tasks.schedule') }}">&lt Schedule</a>
+{% endblock navbar %}
 {% block body %}
 
   <section id=title>

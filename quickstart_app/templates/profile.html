@@ -1,5 +1,8 @@
 {% from "_render_field.html" import render_string_field_like, render_upload_field_like %}
 {% extends "base.html" %}
+{% block navbar %}
+  <a href="{{ url_for('tasks.schedule') }}">&lt Schedule</a>
+{% endblock navbar %}
 {% block body %}
   <div class="content-section">
     <div class="media">

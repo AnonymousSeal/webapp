@@ -95,10 +95,17 @@ hr{
   margin-left: 20px;
 }
 
+.mt-4em{
+  margin-top: 4em;
+}
+
 /* Add a black background color to the top navigation */
 .topnav {
   background-color: black;
   overflow: hidden;
+  position: fixed;
+  top: 0;
+  width: 100%;
 }
 
 /* Style the links inside the navigation bar */

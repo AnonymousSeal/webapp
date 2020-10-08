@@ -1,5 +1,8 @@
 {% from "_render_field.html" import render_string_field_like %}
 {% extends "base.html" %}
+{% block navbar %}
+  <a href="{{ url_for('tasks.schedule') }}">&lt Schedule</a>
+{% endblock navbar %}
 {% block body %}
 
 <section id=add_new_task>

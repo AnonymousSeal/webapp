@@ -1,5 +1,8 @@
 {% from "_render_field.html" import render_upload_field_like %}
 {% extends "base.html" %}
+{% block navbar %}
+  <a href="{{ url_for('tasks.comment', comment_id=comment.id) }}">&lt Back to upload</a>
+{% endblock navbar %}
 {% block body %}
   <div class="content-section">
     <fieldset class="form-group">
@@ -23,7 +26,6 @@
           </div>
         {% endfor %}
       </section>
-      <a class="btn btn-secondary mt-4 m-1" href="{{ url_for('tasks.comment', comment_id=comment.id) }}">< Back</a>
     </fieldset>
   </div>
 {% endblock body %}
