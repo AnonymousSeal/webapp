@@ -24,7 +24,7 @@ body::-webkit-scrollbar-thumb{
   background: #3E4147;
 }
 
-section {
+section{
   display: block;
 }
 
@@ -41,8 +41,7 @@ h3{
   font-size: 1.6rem;
 }
 
-a:link, a:visited {
-  color: #blue;
+a:link, a:visited{
   text-decoration: none;
 }
 a:link:active, a:visited:active {
@@ -69,7 +68,7 @@ hr{
 }
 
 .wrap{
-  width: 600px;
+  width: 50%;
   margin: auto;
   background: #1a1a1a;
   overflow: hidden;
