@@ -1,6 +1,7 @@
 from flask import current_app
 from flask_login import current_user
 from quickstart_app.models import User
+from quickstart_app.main.utils import delete_file
 from PIL import Image
 import secrets
 import os
@@ -18,8 +19,5 @@ def update_picture(form_picture):
     img.thumbnail(output_size)
     img.save(picture_path)
     if current_user.image_file != 'default.jpg':
-        try:
-            os.remove(os.path.join(current_app.root_path, 'static/profile_pictures', current_user.image_file))
-        except:
-            pass
+        delete_file(current_user.image_file, 'static/profile_pictures', 'profile_pictures')
     return picture_name

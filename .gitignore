@@ -1,13 +1,20 @@
+# Python
 __pycache__/
 
+# Emacs
 *.py~
 
+# System
 .DS_Store
 
+# Phrase
 *test*
 *archived*
-material/
 
+# Extension
 *.sqlite3
 
+# Folder
 profile_pictures/
+material/
+.Trash/

@@ -3,6 +3,7 @@ from flask import render_template, request, redirect, url_for, send_from_directo
 from quickstart_app.models import Task, Subject, Material, Comment
 from quickstart_app.tasks.forms import CommentForm, UploadForm, AddTaskForm
 from quickstart_app.tasks.utils import add_file
+from quickstart_app.main.utils import delete_file
 from quickstart_app import db
 from werkzeug.utils import secure_filename
 from datetime import datetime
@@ -94,7 +95,9 @@ def delete_comment(comment_id):
 @tasks.route('/upload/<int:upload_id>/delete', methods=['GET', 'POST'])
 @login_required
 def delete_upload(upload_id):
-    db.session.delete(Material.query.get_or_404(upload_id))
+    material = Material.query.get_or_404(upload_id)
+    delete_file(material.filename, 'static/material', 'material')
+    db.session.delete(material)
     db.session.commit()
     next_page = request.args.get('origin')
     if next_page:
