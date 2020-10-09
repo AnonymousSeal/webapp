@@ -1,9 +1,10 @@
-from flask_login import login_user, current_user, logout_user, login_required
-from flask import render_template, redirect, url_for, flash, request, Blueprint
-from quickstart_app.users.forms import RegistrationForm, LoginForm, UpdateProfileForm
-from quickstart_app.users.utils import get_user_by_username, update_picture
+from quickstart_app import bcrypt, db
 from quickstart_app.models import User
-from quickstart_app import db, bcrypt
+from quickstart_app.users.forms import LoginForm, RegistrationForm, UpdateProfileForm
+from quickstart_app.users.utils import get_user_by_username, update_picture
+from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask_login import current_user, login_required, login_user, logout_user
+
 
 users = Blueprint('users', __name__)
 

@@ -2,6 +2,7 @@ from flask import current_app
 import secrets
 import os
 
+
 def add_file(file, filename):
     orignial_name = file.filename
     random_hex = secrets.token_hex(4)

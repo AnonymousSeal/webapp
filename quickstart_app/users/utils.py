@@ -1,10 +1,11 @@
+from quickstart_app.main.utils import delete_file
+from quickstart_app.models import User
 from flask import current_app
 from flask_login import current_user
-from quickstart_app.models import User
-from quickstart_app.main.utils import delete_file
 from PIL import Image
 import secrets
 import os
+
 
 def get_user_by_username(name):
     return User.query.filter_by(username=name).first()

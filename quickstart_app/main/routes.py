@@ -1,8 +1,8 @@
-from flask_login import current_user, login_required
-from flask import render_template, redirect, url_for, request, Blueprint, abort
-from quickstart_app.models import User, Task, Subject
 from quickstart_app import db
-from datetime import datetime
+from quickstart_app.models import Subject, User
+from flask import abort, Blueprint, redirect, render_template, request, url_for
+from flask_login import current_user, login_required
+
 
 main = Blueprint('main', __name__)
 

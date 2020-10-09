@@ -1,10 +1,8 @@
-from flask import current_app
 from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, TextAreaField, SubmitField, SelectField
-from wtforms.validators import DataRequired, ValidationError
+from flask_wtf.file import FileAllowed, FileField
+from wtforms import SelectField, StringField, SubmitField, TextAreaField
 from wtforms.fields.html5 import DateField, TimeField
-from quickstart_app.models import Subject
+from wtforms.validators import DataRequired
 from datetime import datetime
 
 class CommentForm(FlaskForm):
