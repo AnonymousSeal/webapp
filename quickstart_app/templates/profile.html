@@ -9,11 +9,11 @@
       <img class="rounded-circle account-img" src="{{ image_file }}" alt="profile picture">
       <div class="media-body">
         <h1 class="inline">{{user.username}}</h1><br>
-        email: <em>{{user.email}}</em><br>
-        {% if current_user.username == user.username %}
+        email: <em>{{ user.email }}</em><br>
+        {% if current_user.username == user.username and current_user.status != 'user' %}
           status: <a href="{{ url_for('main.config') }}">{{user.status}}</a>
         {% else %}
-          status: {{user.status}}
+          status: {{ user.status }}
         {% endif %}
       </div>
     </div>

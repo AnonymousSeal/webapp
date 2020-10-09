@@ -91,7 +91,7 @@ def delete_comment(comment_id):
     return redirect(url_for('tasks.task', task_id=comment.task_id))
 
 
-@tasks.route('/delete_upload/<int:upload_id>', methods=['GET', 'POST'])
+@tasks.route('/upload/<int:upload_id>/delete', methods=['GET', 'POST'])
 @login_required
 def delete_upload(upload_id):
     db.session.delete(Material.query.get_or_404(upload_id))
@@ -106,9 +106,6 @@ def delete_upload(upload_id):
 @tasks.route('/add_task', methods=['GET', 'POST'])
 @login_required
 def add_task():
-    if current_user.status == 'user':
-        return redirect(url_for('users.profile', username=current_user.username))
-
     form = AddTaskForm()
     form.subject.choices = [(subject.id, subject.name) for subject in Subject.query.all()]
 

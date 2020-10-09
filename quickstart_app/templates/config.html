@@ -4,23 +4,19 @@
 {% endblock navbar %}
 {% block body %}
 
-<section id="admins">
-  <h1 class="inline">Admins</h1><br>
-  {% for admin in admins %}
-    {{ admin.username }}
-  {% endfor %}
-</section>
+  <section id="configurations">
+    <h1>Configurations</h1>
+    <a href="{{ url_for('main.add_subject')}} ">Add a Subject</a><br>
+    <a href="{{ url_for('tasks.add_task')}} ">Add a Task</a><br>
+  </section>
 
-<section id="add_subject">
-  <h1 class="inline">Add Subject</h1>
-  <form action="" method="POST">
-    <input type="text" name="name" placeholder="subject">
-    <input type="submit" value="Add"><br>
-  </form><br>
-</section>
-
-<section id="editors">
-  <a href="{{ url_for('tasks.add_task')}} ">Add a Task</a>
-</section>
+  <section id="editors">
+    <h1>Editors</h1>
+    {% for editor in editors %}
+      <div>
+        <a href="{{ url_for('users.profile', username=editor.username)}} ">{{ editor.username }}</a>
+      </div>
+    {% endfor %}
+  </section>
 
 {% endblock body %}

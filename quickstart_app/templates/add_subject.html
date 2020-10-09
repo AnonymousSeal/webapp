@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block navbar %}
+  <a href="{{ url_for('main.config') }}">&lt Config</a>
+{% endblock navbar %}
+{% block body %}
+  <div class="content-section">
+    <fieldset class="form-group">
+      <legend class="border-bottom mb-4">Add Comment</legend>
+      <form action="" method="POST">
+        <input type="text" name="name" placeholder="subject" class="form-control form-control-lg"><br>
+        <div class="form-group">
+          <input type="submit" value="Add" class="btn btn-outline-info float-right">
+        </div>
+      </form><br>
+    </fieldset>
+  </div>
+  <section id="subjects">
+    {% for subject in subjects %}
+      <div class="border-round spaced mt">
+        {{ subject.name }}
+      </div>
+    {% endfor %}
+  </section>
+{% endblock body %}

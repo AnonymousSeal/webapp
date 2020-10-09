@@ -2,13 +2,7 @@
 {% block body %}
 
 <section id=add_new_task>
-  {% if current_user.status == 'user' %}
-    <h1 class="inline">Tasks</h1>
-  {% else %}
-  <h1 class="inline">Tasks |
-    <a href="{{ url_for('tasks.add_task') }}" class="button">+</a>
-  </h1>
-  {% endif %}
+  <h1 class="inline">Tasks |<a href="{{ url_for('tasks.add_task') }}" class="button">+</a></h1>
 </section>
 
 <section id=table_of_tasks>
