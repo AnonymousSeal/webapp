@@ -4,6 +4,10 @@ from wtforms import SelectField, StringField, SubmitField, TextAreaField
 from wtforms.fields.html5 import DateField, TimeField
 from wtforms.validators import DataRequired
 from datetime import datetime
+from pytz import timezone
+
+
+tz = timezone('Europe/Vienna')
 
 class CommentForm(FlaskForm):
     content = TextAreaField('Content')
@@ -16,7 +20,7 @@ class UploadForm(FlaskForm):
 class AddTaskForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
-    deadline_date = DateField('Deadline', validators=[DataRequired()], default=datetime.utcnow())
-    deadline_time = TimeField('Deadline', validators=[DataRequired()], default=datetime.utcnow())
+    deadline_date = DateField('Deadline', validators=[DataRequired()], default=datetime.now(tz))
+    deadline_time = TimeField('Deadline', validators=[DataRequired()], default=datetime.now(tz))
     subject = SelectField('Subject', choices=[], coerce=int, validators=[DataRequired()])
     submit = SubmitField('Add')
