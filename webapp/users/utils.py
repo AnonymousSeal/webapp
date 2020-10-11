@@ -1,5 +1,5 @@
-from quickstart_app.main.utils import delete_file
-from quickstart_app.models import User
+from webapp.main.utils import delete_file
+from webapp.models import User
 from flask import current_app
 from flask_login import current_user
 from PIL import Image

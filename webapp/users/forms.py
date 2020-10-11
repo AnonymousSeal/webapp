@@ -1,4 +1,4 @@
-from quickstart_app.models import User
+from webapp.models import User
 from flask_login import current_user
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed, FileField

@@ -1,5 +1,5 @@
-from quickstart_app import db
-from quickstart_app.models import Subject, User
+from webapp import db
+from webapp.models import Subject, User
 from flask import abort, Blueprint, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 

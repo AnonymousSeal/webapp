@@ -1,4 +1,4 @@
-from quickstart_app.config import Config
+from webapp.config import Config
 from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
@@ -15,9 +15,9 @@ def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
 
-    from quickstart_app.main.routes import main
-    from quickstart_app.tasks.routes import tasks
-    from quickstart_app.users.routes import users
+    from webapp.main.routes import main
+    from webapp.tasks.routes import tasks
+    from webapp.users.routes import users
     app.register_blueprint(main)
     app.register_blueprint(tasks)
     app.register_blueprint(users)

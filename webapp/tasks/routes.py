@@ -1,8 +1,8 @@
-from quickstart_app import db
-from quickstart_app.main.utils import delete_file
-from quickstart_app.models import Comment, Material, Subject, Task
-from quickstart_app.tasks.forms import AddTaskForm, CommentForm, UploadForm
-from quickstart_app.tasks.utils import add_file
+from webapp import db
+from webapp.main.utils import delete_file
+from webapp.models import Comment, Material, Subject, Task
+from webapp.tasks.forms import AddTaskForm, CommentForm, UploadForm
+from webapp.tasks.utils import add_file
 from flask import abort, Blueprint, current_app, flash, redirect, render_template, request, send_from_directory, url_for
 from flask_login import current_user, login_required
 from werkzeug.utils import secure_filename

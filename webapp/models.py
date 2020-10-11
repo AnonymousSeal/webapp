@@ -1,4 +1,4 @@
-from quickstart_app import db, login_manager
+from webapp import db, login_manager
 from flask_login import UserMixin
 from datetime import datetime
 from pytz import timezone

@@ -1,7 +1,7 @@
-from quickstart_app import bcrypt, db
-from quickstart_app.models import User
-from quickstart_app.users.forms import LoginForm, RegistrationForm, UpdateProfileForm
-from quickstart_app.users.utils import get_user_by_username, update_picture
+from webapp import bcrypt, db
+from webapp.models import User
+from webapp.users.forms import LoginForm, RegistrationForm, UpdateProfileForm
+from webapp.users.utils import get_user_by_username, update_picture
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
 
