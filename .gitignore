@@ -19,5 +19,4 @@ venv/
 webapp/static/profile_pictures/*
 !webapp/static/profile_pictures/default.jpg
 webapp/static/material/*
-!webapp/static/material/
 .Trash/
