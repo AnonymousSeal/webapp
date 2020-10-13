@@ -1,7 +1,8 @@
 :root{
   font-size: 16px;
   --text-primary: white;
-  --bg-primary: #1E2127;
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #1E2127;
 }
 
 body {
@@ -50,9 +51,9 @@ a:link:active, a:visited:active {
 
 tr:hover {background-color: #272A31;}
 
-th, td {
+/* th, td {
   border-bottom: 0px solid #ddd;
-}
+} */
 
 .bg-black{
   background-color: black;
@@ -65,13 +66,6 @@ th, td {
 
 hr{
   border: 1px solid white;
-}
-
-.wrap{
-  width: 50%;
-  margin: auto;
-  background: #1a1a1a;
-  overflow: hidden;
 }
 
 .inline{
@@ -94,31 +88,25 @@ hr{
   margin-left: 20px;
 }
 
-.mt-4em{
-  margin-top: 4em;
-}
-
 /* Add a black background color to the top navigation */
-.topnav {
+.navigation-bar {
   background-color: black;
   overflow: hidden;
   position: fixed;
-  top: 0;
   width: 100%;
 }
 
 /* Style the links inside the navigation bar */
-.topnav a{
+.navigation-bar a{
   float: left;
   color: #f2f2f2;
   text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
+  padding: 0.875em 1.25em;
+  height: 3.5em
 }
 
 /* Change the color of links on hover */
-.topnav a:hover{
+.navigation-bar a:hover{
   background-color: #1E2127;
 }
 
@@ -129,22 +117,54 @@ hr{
 .account-img{
   height: 10rem;
   width: 10rem;
-  margin-right: 1.25rem;
-  margin-bottom: 1rem;
+  margin: 0 1.25rem 1rem 0;
 }
 
 .img-tiny{
   height: 3.5rem;
   width: 3.5rem;
-  margin-right: 0.5rem;
-  margin-bottom: 0.4rem;
+  margin: 0 0.5rem 0.4rem 0;
 }
 
 .bb-grey{
   border-bottom: 1px solid #17191F;
 }
 
-.debug{
-  background-color: red;
-  color: green;
+.wrap{
+  padding: 10px;
+}
+
+@media (min-width: 700px){
+  .wrap{
+    width: 60%;
+    margin: auto;
+    overflow: hidden;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: var(--bg-primary);
+  }
+
+  body{
+    background-color: var(--bg-secondary)
+  }
+
+  .navigation-bar {
+    top: 0;
+  }
+
+  .navbar-space{
+    margin-top: 4em;
+    margin-bottom: 0.5em;
+  }
+}
+
+@media (max-width: 700px){
+  .navigation-bar {
+    bottom: 0;
+  }
+
+  .navbar-space{
+    margin-top: 0.5em;
+    margin-bottom: 3.5em;
+  }
 }
