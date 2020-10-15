@@ -1,3 +1,4 @@
+from webapp.users.utils import generate_default_picture
 from webapp import db, login_manager
 from flask_login import UserMixin
 from datetime import datetime
@@ -22,7 +23,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), nullable=False, unique=True)
     password = db.Column(db.String(60), nullable=False)
 
-    image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
+    image_file = db.Column(db.String(20), nullable=False, default=generate_default_picture)
     status = db.Column(db.String(20), nullable=False, default='user')
 
     comment = db.relationship('Comment', backref='author', lazy=True, foreign_keys="Comment.author_id")

@@ -17,7 +17,7 @@ venv/
 
 # Folder
 webapp/static/profile_pictures/*
-!webapp/static/profile_pictures/default.jpg
+!webapp/static/profile_pictures/.gitkeep
 webapp/static/material/*
 !webapp/static/material/.gitkeep
 .Trash/
