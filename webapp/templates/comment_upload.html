@@ -11,7 +11,7 @@
         {{ form.hidden_tag() }}
         {{ form.csrf_token() }}
         {{ render_upload_field_like(form.upload, class="inline") }}
-        {{ form.submit(class="btn btn-outline-info inline float-right") }}
+        {{ form.submit(class="btn btn-outline-info inline float-right", accept="image/*" capture) }}
       </form>
       <br><br>
 
