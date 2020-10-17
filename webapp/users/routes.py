@@ -1,7 +1,7 @@
 from webapp import bcrypt, db
 from webapp.models import User
 from webapp.users.forms import LoginForm, RegistrationForm, UpdateProfileForm
-from webapp.users.utils import update_picture
+from webapp.users.utils import get_user_by_username, update_picture
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
 
@@ -47,7 +47,7 @@ def logout():
 @users.route('/profile/<string:username>', methods=['GET', 'POST'])
 @login_required
 def profile(username):
-    user = User.query.filter_by(username=username).first()
+    user = get_user_by_username(username)
     image_file = url_for('static', filename='profile_pictures/' + user.image_file)
     if user == current_user:
         form = UpdateProfileForm()

@@ -9,8 +9,7 @@ venv/
 .DS_Store
 
 # Phrase
-*test*
-*archived*
+*-test-*
 
 # Extension
 *.sqlite3
