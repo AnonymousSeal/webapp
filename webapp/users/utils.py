@@ -1,5 +1,4 @@
 from webapp.main.utils import delete_file
-from webapp.models import User
 from flask import current_app
 from flask_login import current_user
 from PIL import Image
@@ -8,10 +7,6 @@ import numpy as np
 import secrets
 import random
 import os
-
-
-def get_user_by_username(name):
-    return User.query.filter_by(username=name).first()
 
 def update_picture(form_picture):
     random_hex = secrets.token_hex(8)
