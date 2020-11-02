@@ -23,6 +23,16 @@ class RegistrationForm(FlaskForm):
         if user:
             raise ValidationError('That email is taken. Please choose a different one.')
 
+    def validate_password(self, password):
+        if len(password.data) < 8:
+            raise ValidationError('Password must be eight characters or longer.')
+        if password.data == password.data.lower():
+            raise ValidationError('Password must contain at least one capital letter.')
+        for number in range(10):
+            if str(number) in password.data:
+                return
+        raise ValidationError('Password must contain at least one number.')
+
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
