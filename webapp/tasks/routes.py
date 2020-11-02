@@ -69,9 +69,16 @@ def add_comment_upload(comment_id):
     if comment.author != current_user:
         abort(403)
 
-    if form.validate_on_submit():
+    if request.method == 'POST' and 'File' in request.form and form.validate():
         filename = add_file(form.upload.data, secure_filename(comment.task.name))
         db.session.add(Material(filename=filename, orignial_name=form.upload.data.filename, upload_id=comment.id))
+        db.session.commit()
+        return redirect(url_for('tasks.add_comment_upload', comment_id=comment_id))
+    elif request.method == 'POST' and 'Photo' in request.form:
+        print(dict(request.files.lists()))
+        file = request.files['image']
+        filename = add_file(file, secure_filename(comment.task.name))
+        db.session.add(Material(filename=filename, orignial_name=file.filename, upload_id=comment.id))
         db.session.commit()
         return redirect(url_for('tasks.add_comment_upload', comment_id=comment_id))
 

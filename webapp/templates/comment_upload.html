@@ -7,14 +7,21 @@
   <div class="content-section">
     <fieldset class="form-group">
       <legend class="border-bottom mb-4">Add Uploads</legend>
+      <h2>Browse File</h2>
       <form method="POST" enctype=multipart/form-data>
         {{ form.hidden_tag() }}
         {{ form.csrf_token() }}
-        {{ render_upload_field_like(form.upload, class="inline", accept="image/*" capture) }}
-        {{ form.submit(class="btn btn-outline-info inline float-right") }}
+        {{ render_upload_field_like(form.upload, class="inline") }}
+        <input type="submit" name="File" class="btn btn-outline-info inline float-right">
+      </form>
+      <br>
+      <h2>Take Photo</h2>
+      <form method="POST" enctype=multipart/form-data>
+        <input type="file" name="image" accept="image/*" capture="camera">
+        <input type="submit" name="Photo" class="btn btn-outline-info inline float-right">
       </form>
       <br><br>
-
+      <h2>Added Files</h2>
       <section id="cached files">
         {% for upload in comment.material %}
           <div class="border-round spaced mt">
@@ -28,4 +35,21 @@
       </section>
     </fieldset>
   </div>
+  <script>
+    var input = document.querySelector('input[type=file]');
+    input.onchange = function () {
+      var file = input.files[0];
+      upload(file);
+    };
+
+    function upload(file) {
+      var form = new FormData(),
+          xhr = new XMLHttpRequest();
+
+      form.append('image', file);
+      xhr.open('post', 'server.php', true);
+      xhr.send(form);
+    }
+  </script>
+  <!-- source: http://www.w3.org/TR/html-media-capture/ -->
 {% endblock body %}
