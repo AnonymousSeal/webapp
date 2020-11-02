@@ -75,8 +75,13 @@ def add_comment_upload(comment_id):
         db.session.commit()
         return redirect(url_for('tasks.add_comment_upload', comment_id=comment_id))
     elif request.method == 'POST' and 'Photo' in request.form:
-        print(dict(request.files.lists()))
+        if 'image' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
         file = request.files['image']
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
         filename = add_file(file, secure_filename(comment.task.name))
         db.session.add(Material(filename=filename, orignial_name=file.filename, upload_id=comment.id))
         db.session.commit()
