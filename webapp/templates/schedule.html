@@ -6,17 +6,16 @@
 </section>
 
 <section id=table_of_tasks>
-  <table>
-    {% for task in schedule %}
-      <tr>
-        <td>
-          <a href="{{ url_for('tasks.task', task_id=task.id) }}">
-            {{ task.name }}
-          </a>
-        </td>
-      </tr>
+  <div class="mt-2 spaced">
+    {% for task in schedule|sort(attribute='deadline') %}
+      <div class="mt-1 mb-1">
+        <a href="{{ url_for('tasks.task', task_id=task.id) }}">
+          {{ task.name }}
+          <span class="float-right"> {{ task.deadline.strftime('%d.%m.%Y %H:%M') }} </span>
+        </a>
+      </div>
     {% endfor %}
-  </table>
+  </div>
 </section>
 
 {% endblock body %}
