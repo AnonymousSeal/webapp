@@ -1,4 +1,4 @@
-{% from "_render_field.html" import render_string_field_like, render_upload_field_like %}
+{% from "_render_field.html" import render_string_field, render_upload_field %}
 {% extends "base.html" %}
 {% block navbar %}
   <a href="{{ url_for('tasks.schedule') }}">&lt Schedule</a>
@@ -27,9 +27,9 @@
           {{ form.hidden_tag() }}
           <fieldset class="form-group">
             <legend class="border-bottom mb-4">Profile Info</legend>
-            {{ render_string_field_like(form.username) }}
-            {{ render_string_field_like(form.email) }}
-            {{ render_upload_field_like(form.picture) }}
+            {{ render_string_field(form.username) }}
+            {{ render_string_field(form.email) }}
+            {{ render_upload_field(form.picture) }}
           </fieldset>
           <div class="form-group">
             {{ form.submit(class="btn btn-outline-info") }}

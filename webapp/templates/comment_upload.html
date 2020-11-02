@@ -1,4 +1,4 @@
-{% from "_render_field.html" import render_upload_field_like %}
+{% from "_render_field.html" import render_upload_field %}
 {% extends "base.html" %}
 {% block navbar %}
   <a href="{{ url_for('tasks.comment', comment_id=comment.id) }}">&lt Back to upload</a>
@@ -11,7 +11,7 @@
       <form method="POST" enctype=multipart/form-data>
         {{ form.hidden_tag() }}
         {{ form.csrf_token() }}
-        {{ render_upload_field_like(form.upload, class="inline") }}
+        {{ render_upload_field(form.upload, label=false, class="inline") }}
         <input type="submit" name="File" class="btn btn-outline-info inline float-right">
       </form>
       <br>

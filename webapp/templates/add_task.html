@@ -1,4 +1,4 @@
-{% from "_render_field.html" import render_string_field_like %}
+{% from "_render_field.html" import render_string_field %}
 {% extends "base.html" %}
 {% block navbar %}
   <a href="{{ url_for('tasks.schedule') }}">&lt Schedule</a>
@@ -10,8 +10,8 @@
     {{ form.hidden_tag() }}
     {{ form.csrf_token }}
     <fieldset>
-      {{ render_string_field_like(form.title) }}
-      {{ render_string_field_like(form.description) }}
+      {{ render_string_field(form.title) }}
+      {{ render_string_field(form.description) }}
       <div class="form-group">
         {{ form.deadline_date.label() }}<br>
         {{ form.deadline_date }}

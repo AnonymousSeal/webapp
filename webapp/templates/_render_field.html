@@ -1,6 +1,8 @@
-{% macro render_string_field_like(field) %}
+{% macro render_string_field(field, label=true) %}
   <div class="form-group">
-    {{ field.label(class="form-control-label") }}
+    {% if label is true %}
+      {{ field.label(class="form-control-label") }}
+    {% endif %}
     {% if field.errors %}
       {{ field(class="form-control form-control-lg is-invalid", **kwargs)|safe }}
       <div class="invalid-feedback">
@@ -14,8 +16,10 @@
   </div>
 {% endmacro %}
 
-{% macro render_upload_field_like(field) %}
-  {{ field.label() }}<br>
+{% macro render_upload_field(field, label=true) %}
+  {% if label is true %}
+    {{ field.label(class="form-control-label") }}
+  {% endif %}
   {{ field(class="form-control-file", **kwargs)|safe }}
   {% if field.errors %}
     {% for error in field.errors %}

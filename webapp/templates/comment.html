@@ -1,4 +1,4 @@
-{% from "_render_field.html" import render_string_field_like %}
+{% from "_render_field.html" import render_string_field %}
 {% extends "base.html" %}
 {% block navbar %}
   <a href="{{ url_for('tasks.task', task_id=task.id) }}">&lt {{ task.name }}</a>
@@ -24,7 +24,12 @@
       <form method="POST" action="">
         {{ form.hidden_tag() }}
         {{ form.csrf_token() }}
-        {{ render_string_field_like(form.content) }}
+        {{ render_string_field(form.content, label=false) }}
+        {% for material in comment.material %}
+          <div>
+            <a href="{{ url_for('tasks.uploaded_file', filename=material.filename) }}">{{ material.orignial_name }}</a>
+          </div>
+        {% endfor %}
         <br>
         <div class="form-group">
           {{ form.submit(class="btn btn-outline-info inline") }}
@@ -32,12 +37,11 @@
       </form>
     {% else %}
       <p>{{comment.comment}}</p>
+      {% for material in comment.material %}
+        <div>
+          <a href="{{ url_for('tasks.uploaded_file', filename=material.filename) }}">{{ material.orignial_name }}</a>
+        </div>
+      {% endfor %}
     {% endif %}
-    <br>
-    {% for material in comment.material %}
-      <span class="ml">
-        <a href="{{ url_for('tasks.uploaded_file', filename=material.filename) }}">{{ material.orignial_name }}</a><br>
-      </span>
-    {% endfor %}
   </div>
 {% endblock body %}

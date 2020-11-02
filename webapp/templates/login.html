@@ -1,4 +1,4 @@
-{% from "_render_field.html" import render_string_field_like %}
+{% from "_render_field.html" import render_string_field %}
 {% extends "base.html" %}
 {% block body %}
   <div class="content-section">
@@ -6,8 +6,8 @@
       {{ form.hidden_tag() }}
       <fieldset class="form-group">
         <legend class="border-bottom mb-4">Login</legend>
-        {{ render_string_field_like(form.email) }}
-        {{ render_string_field_like(form.password) }}
+        {{ render_string_field(form.email) }}
+        {{ render_string_field(form.password) }}
         <span class="form-group ml">
           {{ form.remember(class="form-check-input") }}
           {{ form.remember.label(class="form-check-label") }}

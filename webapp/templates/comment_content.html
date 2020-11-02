@@ -1,4 +1,4 @@
-{% from "_render_field.html" import render_string_field_like %}
+{% from "_render_field.html" import render_string_field %}
 {% extends "base.html" %}
 {% block navbar %}
   <a href="{{ url_for('tasks.task', task_id=task.id) }}">&lt {{ task.name }}</a>
@@ -10,7 +10,7 @@
       <form method="POST" action="">
         {{ form.hidden_tag() }}
         {{ form.csrf_token() }}
-        {{ render_string_field_like(form.content) }}
+        {{ render_string_field(form.content) }}
         <br>
         <div class="form-group">
           {{ form.submit(class="btn btn-outline-info float-right") }}
