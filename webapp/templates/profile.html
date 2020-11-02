@@ -11,9 +11,13 @@
         <h1 class="inline">{{user.username}}</h1><br>
         email: <em>{{ user.email }}</em><br>
         {% if current_user.username == user.username and current_user.status != 'user' %}
-          status: <a href="{{ url_for('main.config') }}">{{user.status}}</a>
+            status: <a href="{{ url_for('main.config') }}">{{user.status}}</a>
         {% else %}
-          status: {{ user.status }}
+          {% if user.status == 'god_mode' %}
+            status: editor
+          {% else %}
+            status: {{ user.status }}
+          {% endif %}
         {% endif %}
       </div>
     </div>
