@@ -8,14 +8,32 @@
 <section id=table_of_tasks>
   <div class="mt-2 spaced">
     {% for task in schedule|sort(attribute='deadline') %}
-      <div class="mt-1 mb-1">
-        <a href="{{ url_for('tasks.task', task_id=task.id) }}">
-          {{ task.name }}
-          <span class="float-right">
-             <small class="text-muted">{{ task.deadline.strftime('%d.%m.%Y %H:%M') }}</small>
-          </span>
-        </a>
-      </div>
+      {% if not already_past(task.deadline) %}
+        <div class="mt-1 mb-1">
+          <a href="{{ url_for('tasks.task', task_id=task.id) }}">
+            {{ task.name }}
+            <span class="float-right">
+               <small class="text-muted">{{ task.deadline.strftime('%d.%m.%Y %H:%M') }}</small>
+            </span>
+          </a>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+  <hr class="grey">
+  <h5>Past Tasks</h5>
+  <div class="mt-2 spaced">
+    {% for task in schedule|sort(attribute='deadline')|reverse %}
+      {% if already_past(task.deadline) %}
+        <div class="mt-1 mb-1">
+          <a href="{{ url_for('tasks.task', task_id=task.id) }}" class="text-muted">
+            {{ task.name }}
+            <span class="float-right">
+               <small class="text-muted">{{ task.deadline.strftime('%d.%m.%Y %H:%M') }}</small>
+            </span>
+          </a>
+        </div>
+      {% endif %}
     {% endfor %}
   </div>
 </section>

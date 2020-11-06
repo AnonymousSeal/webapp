@@ -130,6 +130,10 @@ hr{
   border-bottom: 1px solid #17191F;
 }
 
+.grey{
+  color: grey;
+}
+
 .wrap{
   padding: 10px;
 }
