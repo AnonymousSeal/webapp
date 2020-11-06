@@ -29,7 +29,7 @@ def add_subject():
 @main.route('/subject/<int:subject_id>/delete', methods=['GET', 'POST'])
 @login_required
 def delete_subject(subject_id):
-    subject = Subject.query.get_or_404(name=subject_id)
+    subject = Subject.query.get_or_404(subject_id)
     if current_user.status == 'user':
         abort(403)
     db.session.delete(subject)
