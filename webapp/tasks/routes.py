@@ -48,16 +48,21 @@ def comment(comment_id):
     return render_template('comment.html', title=task.name, comment=comment, task=task, form=form)
 
 
-@tasks.route('/task/<int:task_id>/comment', methods=['GET', 'POST'])
+@tasks.route('/task/<int:task_id>/comment', defaults={'anonymous': None}, methods=['GET', 'POST'])
+@tasks.route('/task/<int:task_id>/comment/<string:anonymous>', methods=['GET', 'POST'])
 @login_required
-def add_comment_content(task_id):
+def add_comment_content(task_id, anonymous):
     form = CommentForm()
 
     task = Task.query.get_or_404(task_id)
 
     if form.validate_on_submit():
         # add comment
-        comment = Comment(comment=form.content.data, author_id=current_user.id, task_id=task_id)
+        print(anonymous)
+        if anonymous is not None and anonymous.lower() in ['anonymous', 'a']:
+            comment = Comment(comment=form.content.data, author_id=1, task_id=task_id)
+        else:
+            comment = Comment(comment=form.content.data, author_id=current_user.id, task_id=task_id)
         db.session.add(comment)
         db.session.commit()
 
