@@ -65,7 +65,7 @@ def add_comment_content(task_id):
 @login_required
 def update_task(task_id):
     task = Task.query.get_or_404(task_id)
-    if comment.status == 'user':
+    if current_user.status == 'user':
         abort(403)
     for comment in task.comment:
         db.session.delete(comment)
