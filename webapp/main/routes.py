@@ -20,18 +20,16 @@ def config():
 @login_required
 def add_subject():
     subjects = Subject.query.all()
-    if request.method == 'POST':
+    if request.method == 'POST' and request.form['name'] != '':
         db.session.add(Subject(name=request.form['name']))
         db.session.commit()
         return redirect(url_for('main.add_subject'))
     return render_template('add_subject.html', title='Subject', subjects=subjects)
 
-@main.route('/subject/<string:subject_name>/delete', methods=['GET', 'POST'])
+@main.route('/subject/<int:subject_id>/delete', methods=['GET', 'POST'])
 @login_required
-def delete_subject(subject_name):
-    subject = Subject.query.filter_by(name=subject_name).first()
-    if subject is None:
-        abort(404)
+def delete_subject(subject_id):
+    subject = Subject.query.get_or_404(name=subject_id)
     if current_user.status == 'user':
         abort(403)
     db.session.delete(subject)
