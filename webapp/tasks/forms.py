@@ -14,7 +14,7 @@ class CommentForm(FlaskForm):
     submit = SubmitField('Comment')
 
 class UploadForm(FlaskForm):
-    upload = FileField('Upload', validators=[DataRequired(), FileAllowed(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'doc', 'docx', 'pptx', 'xlsx', '.gpa'])])
+    upload = FileField('Upload', validators=[DataRequired(), FileAllowed(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'doc', 'docx', 'pptx', 'xlsx', '.gap'])])
     submit = SubmitField('Upload File')
 
 class AddTaskForm(FlaskForm):
