@@ -9,8 +9,7 @@ main = Blueprint('main', __name__)
 @main.route('/config', methods=['GET', 'POST'])
 @login_required
 def config():
-    user = User.query.get_or_404(current_user.id)
-    if user.status == 'user':
+    if current_user.status == 'user':
         abort(403)
 
     editors = User.query.filter_by(status='editor').all()
@@ -26,6 +25,18 @@ def add_subject():
         db.session.commit()
         return redirect(url_for('main.add_subject'))
     return render_template('add_subject.html', title='Subject', subjects=subjects)
+
+@main.route('/subject/<string:subject_name>/delete', methods=['GET', 'POST'])
+@login_required
+def delete_subject(subject_name):
+    subject = Subject.query.filter_by(name=subject_name).first()
+    if subject is None:
+        abort(404)
+    if current_user.status == 'user':
+        abort(403)
+    db.session.delete(subject)
+    db.session.commit()
+    return redirect(url_for('main.add_subject'))
 
 @main.route('/makeditor/<string:username>')
 @login_required
