@@ -61,6 +61,24 @@ def add_comment_content(task_id):
     return render_template('comment_content.html', title='Add Comment',
                             form=form, task=task)
 
+@tasks.route('/task/<int:task_id>/delete', methods=['GET', 'POST'])
+@login_required
+def update_task(task_id):
+    task = Task.query.get_or_404(task_id)
+    if comment.status == 'user':
+        abort(403)
+    for comment in task.comment:
+        db.session.delete(comment)
+        for material in comment.material:
+            db.session.delete(material)
+            delete_file(material.filename, 'static/material', 'material')
+        db.session.commit()
+    db.session.commit()
+    db.session.delete(task)
+    db.session.commit()
+    flash('Your task and all associated comments have been deleted!', 'success')
+    return redirect(url_for('tasks.schedule'))
+
 @tasks.route('/comment/<int:comment_id>/upload', methods=['GET', 'POST'])
 @login_required
 def add_comment_upload(comment_id):
