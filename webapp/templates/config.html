@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block navbar %}
-  <a href="{{ url_for('tasks.schedule') }}">&lt Schedule</a>
+  <a href="{{ url_for('users.profile', username=current_user.username) }}">&lt Profile</a>
 {% endblock navbar %}
 {% block body %}
 
