@@ -15,11 +15,9 @@ login_manager.login_message_category = 'info'
 def already_past(date):
     now = datetime.now()
     delta = date - now
-    diff = delta.days + 1
-    if diff < 0:
+    if str(delta)[0] == '-':
         return True
-    else:
-        return False
+    return False
 
 def create_app(config_class=Config):
     app = Flask(__name__)
