@@ -11,10 +11,10 @@ main = Blueprint('main', __name__)
 def config():
     if current_user.status == 'user':
         abort(403)
-
+    users = User.query.all()
     editors = User.query.filter_by(status='editor').all()
     god_mode = User.query.filter_by(status='god_mode').all()
-    return render_template('config.html', title='Config', editors=editors+god_mode)
+    return render_template('config.html', title='Config', editors=editors+god_mode, users=users)
 
 @main.route('/subject', methods=['GET', 'POST'])
 @login_required

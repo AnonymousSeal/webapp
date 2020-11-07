@@ -19,4 +19,15 @@
     {% endfor %}
   </section>
 
+  <section id="users">
+    {% if current_user.status == 'god_mode' %}
+      <h1>Users</h1>
+      {% for user in users %}
+        <span>
+          <a href="{{ url_for('users.profile', username=user.username)}} ">{{ user.username }}</a> &emsp;
+        </span>
+      {% endfor %}
+    {% endif %}
+  </section>
+
 {% endblock body %}
