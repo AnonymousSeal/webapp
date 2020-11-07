@@ -58,7 +58,6 @@ def add_comment_content(task_id, anonymous):
 
     if form.validate_on_submit():
         # add comment
-        print(anonymous)
         if anonymous is not None and anonymous.lower() in ['anonymous', 'a']:
             comment = Comment(comment=form.content.data, author_id=1, task_id=task_id)
         else:
