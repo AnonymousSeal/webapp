@@ -6,6 +6,7 @@ with open('/etc/config.json') as config_file:
 class Config(object):
     # Flask settings
     SECRET_KEY = config.get('SECRET_KEY')
+    PERMANENT_SESSION_LIFETIME = timedelta(hours=12)
 
     # Flask-SQLAlchemy settings
     SQLALCHEMY_DATABASE_URI = config.get('SQLALCHEMY_DATABASE_URI')
